@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Olawole Frankfurt Ogunfunminiyi - NIH Biographical Sketch">
+  <title>About - Frankfurt Ogunfunminiyi</title>
+  
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --text-color: #333;
+      --light-bg: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--white);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    /* Header */
+    header {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--secondary-color);
+    }
+    
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: var(--white);
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .page-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+    
+    /* Content Sections */
+    .bio-section {
+      padding: 3rem 0;
+    }
+    
+    .bio-section:nth-child(even) {
+      background: var(--light-bg);
+    }
+    
+    .bio-section h2 {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+      border-bottom: 3px solid var(--secondary-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    .bio-section h3 {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .bio-section h4 {
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .bio-section p {
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+    
+    .bio-section ul {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .bio-section li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .info-box {
+      background: var(--light-bg);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .info-box strong {
+      color: var(--primary-color);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    th {
+      background: var(--primary-color);
+      color: var(--white);
+      font-weight: 600;
+    }
+    
+    tr:hover {
+      background: var(--light-bg);
+    }
+    
+    .badge {
+      display: inline-block;
+      background: var(--secondary-color);
+      color: var(--white);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--primary-color);
+      color: var(--white);
+      padding: 2rem 0;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    
+    footer a {
+      color: var(--white);
+      text-decoration: none;
+      margin: 0 1rem;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 2rem;
+      }
+      
+      .bio-section h2 {
+        font-size: 1.5rem;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="index.html" class="logo">Frankfurt Ogunfunminiyi</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="https://github.com/frankfurtmacmoses" target="_blank">GitHub</a></li>
+          <li><a href="https://linkedin.com/in/frankfurtogunfunminiyi" target="_blank">LinkedIn</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Biographical Sketch</h1>
+      <p>NIH Format Page</p>
+    </div>
+  </div>
+  
+  <main>
+    <!-- Basic Information -->
+    <section class="bio-section">
+      <div class="container content">
+        <div class="info-box">
+          <p><strong>NAME:</strong> Olawole Frankfurt Ogunfunminiyi</p>
+          <p><strong>eRA COMMONS USER NAME:</strong> OGUNFUNMINIYIOF (Person ID: 80454331)</p>
+          <p><strong>ORCID ID:</strong> 0009-0007-4585-5642 (<a href="https://orcid.org/0009-0007-4585-5642" target="_blank">https://orcid.org/0009-0007-4585-5642</a>)</p>
+          <p><strong>POSITION TITLE:</strong> Principal Investigator; CEO, Plexusoft LLC; Ph.D. Candidate</p>
+        </div>
+        
+        <h3>Education/Training</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Institution and Location</th>
+              <th>Degree</th>
+              <th>Year</th>
+              <th>Field of Study</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Prairie View A&M University, Prairie View, TX</td>
+              <td>M.S.</td>
+              <td>2020</td>
+              <td>Computer Science</td>
+            </tr>
+            <tr>
+              <td>Business School Netherlands</td>
+              <td>MBA</td>
+              <td>2018</td>
+              <td>Business Administration</td>
+            </tr>
+            <tr>
+              <td>Prairie View A&M University, Prairie View, TX</td>
+              <td>Ph.D. (In Progress)</td>
+              <td>Expected 2026</td>
+              <td>Electrical and Computer Engineering</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h4>Additional Certifications:</h4>
+        <ul>
+          <li>TOGAF Certified Enterprise Architect, The Open Group</li>
+          <li>Project Management Professional (PMP), Project Management Institute</li>
+          <li>AWS Certified Solutions Architect – Professional, Amazon Web Services</li>
+          <li>Certified Java Programmer, Oracle Corporation</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Personal Statement -->
+    <section class="bio-section">
+      <div class="container content">
+        <h2>A. Personal Statement</h2>
+        
+        <p>I am uniquely positioned to lead this NIH-funded research as both a computational scientist and healthcare technology entrepreneur. My decade of experience architecting enterprise-scale data platforms, combined with my doctoral research in deep learning for biomedical applications, directly aligns with this project's dual focus on AI-driven predictive analytics and real-world healthcare system implementation.</p>
+        
+        <p>As CEO of Plexusoft LLC, I am leading the design and development of an Oracle APEX-based healthcare management platform for residential care facilities in Texas. The platform is currently in the design phase, with comprehensive technical design documentation (TDD) completed and architecture validated. My company's mission centers on democratizing healthcare technology for under-resourced populations—a philosophy that directly motivates this research targeting minority-serving childcare and elder care facilities. This NIH SBIR/STTR funding will enable full platform development and deployment, followed by collection of real-world operational data to train AI-powered predictive models.</p>
+        
+        <p>My current role as NIH trainnig at CliftonLarsonAllen enhances this research through expertise in TOGAF-aligned architecture frameworks, Azure Landing Zone design, and governance models for analytics platforms—directly applicable to the proposed NIH project's multi-tenant cloud architecture and HIPAA compliance requirements. My technical expertise spans the entire data science pipeline: from ETL architecture (AWS Glue, Databricks, Apache Iceberg) to machine learning model development (PyTorch, TensorFlow, Graph Neural Networks) to production deployment in regulated healthcare environments.</p>
+        
+        <p>My doctoral research at Prairie View A&M University focuses on linking computational biology, data science, and artificial intelligence to address critical challenges in public health and food nutrition. Specifically, I am developing transformer-augmented Graph Neural Networks (GNNs) for spatially-resolved biological data analysis, with applications spanning nutritional epidemiology, healthcare delivery optimization, and population health surveillance. My work with the MERFISH mouse brain dataset (2.8 million cells, 1,100+ features) demonstrates the translational potential of computational biology methods: the same techniques used for spatial transcriptomics analysis—handling high-dimensional data, training large-scale neural networks, and validating predictive models—directly apply to public health challenges such as predicting adverse health events in vulnerable populations, optimizing nutritional interventions, and identifying food insecurity risk factors.</p>
+        
+        <p>The methodological parallels between my dissertation work and this NIH proposal are substantial: both apply computational biology frameworks to health data; both require interpretable AI models that clinicians and public health practitioners can trust; both address health disparities in underserved populations (children in residential care, elderly adults in small facilities); and both serve communities that lack access to enterprise-grade analytics tools. My dissertation's emphasis on public health and food nutrition directly aligns with NIMHD's mission to reduce health disparities, as inadequate nutrition and healthcare access are root causes of adverse outcomes in the residential care populations targeted by this research.</p>
+        
+        <p>As Principal Investigator, I will dedicate 50% effort (6 calendar months) to this project, personally leading algorithm development, model training, and validation activities. This effort will be allocated primarily during evenings, weekends, and coordinated with my current employer (CliftonLarsonAllen) to ensure no conflicts of commitment. My employer has confirmed support for this academic research pursuit, as it aligns with CLA's commitment to healthcare innovation and does not compete with client engagements. My triple expertise—healthcare IT business operations (Plexusoft CEO), computational biology research (PVAMU Ph.D.), and enterprise architecture (CLA)—ensures that deliverables will be scientifically rigorous, commercially viable, and production-ready for scale, which is critical for the SBIR program's translational mission.</p>
+        
+        <h4>Relevant Publications:</h4>
+        <ul>
+          <li>Ogunfunminiyi F, et al. (2025). "SpatialTransformerGNN: A Transformer-Augmented Bilevel GNN for Spatially Informed Cell Classification." <em>Advanced Bioinformatics</em> (In submission).</li>
+        </ul>
+        
+        <h4>Research Focus Areas:</h4>
+        <ul>
+          <li>Computational biology methods applied to public health and food nutrition challenges</li>
+          <li>Deep learning for healthcare predictive analytics (LSTM, transformer architectures, GNNs)</li>
+          <li>Nutritional epidemiology and food insecurity risk modeling</li>
+          <li>Cloud-native data platform architecture for HIPAA-compliant healthcare systems</li>
+          <li>Real-time machine learning inference in production environments</li>
+          <li>Low-code development platforms (Oracle APEX) for rapid healthcare application deployment</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Positions and Honors -->
+    <section class="bio-section">
+      <div class="container content">
+        <h2>B. Positions, Scientific Appointments, and Honors</h2>
+        
+        <h3>Positions and Employment</h3>
+        
+        <h4>2024 – Present</h4>
+        <p><strong>Chief Executive Officer & Founder</strong><br>
+        Plexusoft LLC, Cypress, TX</p>
+        <ul>
+          <li>Lead design and architecture of Oracle APEX-based healthcare management platform for residential care facilities (currently in design phase with completed technical design documentation)</li>
+          <li>Designed multi-tenant cloud architecture for HIPAA-compliant SaaS applications using Oracle Database 23c and Virtual Private Database (VPD) row-level security</li>
+          <li>Oversee product strategy, technical development, and business operations for healthcare IT startup</li>
+          <li>Seeking NIH SBIR/STTR funding to complete platform development and implement AI-powered predictive analytics for dual populations (childcare and elder care)</li>
+          <li>Maintain 50% time allocation for NIH research (nights/weekends), coordinated with current employer to ensure no conflicts of commitment</li>
+        </ul>
+        
+        <h4>May 2025 – Present</h4>
+        <p><strong>Senior Enterprise Architect</strong><br>
+        CliftonLarsonAllen (CLA), Houston, TX</p>
+        <ul>
+          <li>Enhanced data organization efficiency by 21% through translating Azure Landing Zone architectures into actionable enterprise frameworks aligned with TOGAF principles</li>
+          <li>Established clear roles, responsibilities, and operating structures across data, engineering, and platform teams to strengthen governance and delivery</li>
+          <li>Developed and enforced governance and accountability models for Databricks and analytics landing zones, ensuring regulatory compliance and operational excellence</li>
+          <li>Applied TOGAF-aligned architecture methods to standardize processes, improve consistency, and increase operational reliability across multi-cloud environments</li>
+          <li>Lead enterprise-scale data platform transformations for Fortune 500 clients in healthcare, energy, and financial services sectors</li>
+          <li>Role provides enterprise architecture expertise that strengthens NIH grant deliverables and validates commercial viability of Plexusoft platform</li>
+        </ul>
+        
+        <h4>2021 – 2024</h4>
+        <p><strong>Senior Data Architect</strong><br>
+        Shell Energy Solutions, Houston, TX</p>
+        <ul>
+          <li>Architected enterprise data lakehouse solutions on AWS and Azure using Databricks and Apache Iceberg</li>
+          <li>Designed streaming data pipelines processing millions of records daily (Kafka MSK, AWS Glue, Delta Live Tables)</li>
+          <li>Led data governance implementation using Unity Catalog with RBAC/TBAC enforcement and Terraform-based infrastructure-as-code</li>
+          <li>Reduced solution validation time by 30% through proof-of-concept automation framework</li>
+          <li>Managed cross-functional teams across data engineering, analytics, and business intelligence domains</li>
+        </ul>
+        
+        <h4>2019 – 2021</h4>
+        <p><strong>Lead Data Engineer / Technical Manager</strong><br>
+        Pilot Energy, Texas</p>
+        <ul>
+          <li>Led cloud migration of on-premises data warehouse to AWS with CI/CD automation (Terraform, Jenkins)</li>
+          <li>Developed real-time energy trading risk management platform integrated with RightAngle system</li>
+          <li>Built Iceberg-based ingestion layer handling 3M+ records across 1,000+ fields with sub-minute latency</li>
+          <li>Directed team of 5 engineers across development, testing, and production deployment lifecycle</li>
+        </ul>
+        
+        <h4>2018 – 2019</h4>
+        <p><strong>Data Engineer</strong><br>
+        ConocoPhillips, Houston, TX</p>
+        <ul>
+          <li>Developed ETL pipelines for upstream oil & gas data analytics</li>
+          <li>Implemented data quality frameworks for seismic and well log data processing</li>
+          <li>Built dashboards in Tableau and Power BI for executive decision support</li>
+        </ul>
+        
+        <h3>Academic Appointments</h3>
+        
+        <h4>2024 – Present</h4>
+        <p><strong>Ph.D. Researcher (Dissertation Phase)</strong><br>
+        Department of Electrical and Computer Engineering<br>
+        Prairie View A&M University, Prairie View, TX</p>
+        <ul>
+          <li>Dissertation Title: "Computational Biology, Data Science, and AI Applications in Public Health and Food Nutrition"</li>
+          <li>Dissertation Focus: Linking computational biology methods with data science and artificial intelligence to address public health challenges, with emphasis on nutritional epidemiology and healthcare delivery for vulnerable populations</li>
+          <li>Research Areas: Graph Neural Networks, transformer architectures, spatial transcriptomics analysis, predictive modeling for health outcomes</li>
+          <li>Processed 2.8M cell MERFISH mouse brain dataset using PyTorch and DGL (Deep Graph Library)</li>
+          <li>Developed novel contrastive learning approach for GNN-adaptive adjacency matrix construction</li>
+          <li>Applied computational biology frameworks to public health surveillance and nutritional intervention planning</li>
+        </ul>
+        
+        <h4>2018 – 2020</h4>
+        <p><strong>Graduate Research Assistant & IBM Masters Fellow</strong><br>
+        Department of Computer Science<br>
+        Prairie View A&M University, Prairie View, TX</p>
+        <ul>
+          <li><strong>IBM Masters Fellowship Award (2021-2022):</strong> One of 15 worldwide recipients selected for the prestigious IBM Global University Programs Masters and PhD Fellowship Awards, receiving $14,000 in research funding</li>
+          <li>Conducted interdisciplinary research collaboration with Dr. Cui Suxia (Electrical and Computer Engineering) and thesis advisor Dr. Lening Wang (Computer Science)</li>
+          <li>Research focus: Machine learning applications for healthcare data analytics and computational methods for biomedical engineering</li>
+          <li>Master's Thesis: Advanced computational methods integrating data science and engineering principles</li>
+          <li>Teaching Assistant for courses: Data Structures, Database Systems, Cloud Computing</li>
+        </ul>
+        
+        <h3>Honors and Awards</h3>
+        <ul>
+          <li><strong>IBM Masters Fellowship Award</strong> (2021-2022 IBM Global University Programs, one of 15 worldwide recipients selected from masters and PhD candidates, $14,000 award)</li>
+          <li><strong>TOGAF Certified Enterprise Architect</strong> (The Open Group Architecture Framework - Level 1, 2024)</li>
+          <li><strong>CliftonLarsonAllen Excellence in Enterprise Architecture</strong> (2025)</li>
+          <li><strong>Shell Energy Solutions Innovation Award for Data Platform Architecture</strong> (2023)</li>
+          <li><strong>AWS Certified Solutions Architect – Professional</strong> (Top-tier cloud architecture certification, 2022)</li>
+          <li><strong>Project Management Professional (PMP)</strong> Certification (Project Management Institute, 2019)</li>
+          <li><strong>Dean's List</strong>, Prairie View A&M University (Multiple semesters, 2018-2020)</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Contributions to Science -->
+    <section class="bio-section">
+      <div class="container content">
+        <h2>C. Contributions to Science</h2>
+        
+        <h3>1. Deep Learning for Spatial Biological Data Analysis</h3>
+        
+        <p>My most significant scientific contribution is the development of SpatialTransformerGNN, a novel architecture that combines transformer self-attention mechanisms with Graph Neural Networks for spatially-resolved biological data classification. Traditional GNN approaches for spatial transcriptomics rely on fixed-radius neighbor graphs or k-nearest-neighbor structures, which fail to capture the complex, multi-scale spatial relationships inherent in tissue architecture. My bilevel GNN framework addresses this by: (1) using contrastive learning to learn adaptive adjacency matrices that reflect biological relationships rather than arbitrary distance thresholds, and (2) integrating transformer-style positional encodings to preserve spatial coordinate information during message-passing operations.</p>
+        
+        <p>Testing on the MERFISH mouse brain dataset (2.8 million cells, 1,138 genes, 7 anatomical regions), SpatialTransformerGNN achieved 92.3% classification accuracy—a 7.8% improvement over baseline GNN methods and 4.2% improvement over pure transformer approaches. The learned adjacency matrices revealed biologically interpretable cell-cell communication patterns, with strong edges connecting neurons to astrocytes in expected functional circuits. This work demonstrates how hybrid deep learning architectures can extract meaningful biological insights from high-dimensional spatial omics data, with direct applications to histopathology image analysis, tumor microenvironment characterization, and developmental biology.</p>
+        
+        <h4>Key Publication:</h4>
+        <ul>
+          <li><strong>Ogunfunminiyi F</strong>, et al. (2025). "SpatialTransformerGNN: A Transformer-Augmented Bilevel GNN for Spatially Informed Cell Classification." <em>Advanced Bioinformatics</em> (In submission). [Manuscript demonstrates 92.3% accuracy on 2.8M cell MERFISH dataset, introduces contrastive learning for adaptive graph construction, benchmarks against 5 baseline methods]</li>
+        </ul>
+        
+        <h4>Computational Artifacts:</h4>
+        <ul>
+          <li>GitHub Repository: <a href="https://github.com/frankfurtmacmoses/SpatialTransformerGNN" target="_blank">https://github.com/frankfurtmacmoses/SpatialTransformerGNN</a> (3,500+ lines of PyTorch code, including data preprocessing, model training, and visualization scripts)</li>
+          <li>Trained Model Weights: Available on Hugging Face Model Hub for reproducibility</li>
+          <li>Interactive Notebooks: Jupyter notebooks demonstrating key results and visualizations</li>
+        </ul>
+        
+        <p><strong>Impact:</strong> This methodology is directly transferable to the proposed NIH project, where spatial relationships (facility characteristics, geographic location, patient proximity in shared spaces) may influence health outcomes. The same contrastive learning + GNN framework can model relationships between patients, staff, and environmental factors to predict adverse events.</p>
+        
+        <h3>2. Enterprise-Scale Cloud Data Architecture for Healthcare and Energy</h3>
+        
+        <p>I have led the design and implementation of production-grade data platforms serving millions of users across healthcare and energy sectors, with particular expertise in HIPAA-compliant cloud architectures. At Shell Energy Solutions, I architected a multi-petabyte data lakehouse on AWS and Azure using Databricks Unity Catalog, implementing fine-grained RBAC/TBAC controls, encryption at rest and in transit (AWS KMS, Azure Key Vault), and automated data lineage tracking. The platform processes 500M+ daily transactions from smart meters, trading systems, and IoT sensors, with 99.9% uptime SLAs.</p>
+        
+        <p>For Plexusoft LLC's healthcare management platform, I designed a multi-tenant Oracle APEX architecture on Oracle Database 23c that enforces tenant isolation through Virtual Private Database (VPD) policies, ensuring that childcare facilities cannot access each other's sensitive patient data. The system adheres to Texas Health and Human Services Commission (HHSC) regulatory requirements (26 TAC Chapters 748-750) for electronic health records in residential childcare settings.</p>
+        
+        <h4>Key Achievements:</h4>
+        <ul>
+          <li>Reduced infrastructure costs by 60% through Iceberg table format adoption (vs. traditional Parquet)</li>
+          <li>Improved query performance by 40% via medallion architecture (bronze → silver → gold layers)</li>
+          <li>Achieved &lt;5-minute data freshness for real-time dashboards using Delta Live Tables streaming pipelines</li>
+        </ul>
+        
+        <h3>3. Real-Time Predictive Analytics for Mission-Critical Systems</h3>
+        
+        <p>I have designed and deployed machine learning-powered predictive analytics systems in domains where algorithmic failures have severe consequences—energy grid stability (preventing blackouts), financial trading (preventing compliance violations), and industrial safety (preventing equipment failures). At Pilot Energy, I built a real-time risk management system for natural gas trading that used Random Forest classifiers to predict contract breaches 48 hours in advance, enabling proactive hedging strategies. The system processed streaming market data (Kafka) and executed inference within 100ms latency requirements, directly integrated with the RightAngle trading platform.</p>
+        
+        <h4>Business Impact:</h4>
+        <ul>
+          <li>Reduced trading losses by $2.3M annually through early breach prediction</li>
+          <li>Improved operational efficiency by 35% through automation of manual risk assessment processes</li>
+          <li>Achieved 78% prediction accuracy (AUC = 0.82) on out-of-sample test set spanning 18 months</li>
+        </ul>
+        
+        <h3>4. Low-Code Healthcare Application Design for Vulnerable Populations</h3>
+        
+        <p>As CEO of Plexusoft LLC, I am leading the design of an Oracle APEX (Application Express)-based healthcare management platform targeting small, under-resourced residential care facilities serving predominantly minority populations. Traditional EHR systems (Epic, Cerner, PointClickCare) cost $24,000-60,000 per facility annually—prohibitively expensive for 10-16 bed childcare group homes and elder care facilities. My innovation is to leverage Oracle APEX's low-code framework to build fully-featured healthcare applications at 90% cost reduction ($200-500/month SaaS), while maintaining HIPAA compliance and regulatory adherence.</p>
+        
+        <h4>Technical Design Completed (Seeking NIH Funding for Implementation):</h4>
+        <ul>
+          <li>Multi-tenant architecture: Single Oracle Database 23c instance supporting 30+ facilities with complete data isolation via Virtual Private Database (VPD) row-level security</li>
+          <li>Comprehensive technical design documentation (TDD): 16 sections covering architecture, database schema, security, workflows, integration, deployment, and testing</li>
+          <li>Platform scope: 50+ planned APEX pages (patient intake, medication administration, incident reporting, HHSC regulatory compliance)</li>
+          <li>Regulatory automation: Automated generation of Texas HHSC-required reports with one-click PDF export</li>
+          <li>Mobile-first design: Responsive APEX Universal Theme with Progressive Web App (PWA) capabilities</li>
+        </ul>
+        
+        <h3>5. TOGAF-Aligned Enterprise Architecture for Healthcare Data Platforms</h3>
+        
+        <p>As a TOGAF-certified Senior Enterprise Architect at CliftonLarsonAllen, I lead the design and implementation of enterprise-scale data platforms for healthcare organizations, applying The Open Group Architecture Framework (TOGAF) methodology to ensure scalability, security, and regulatory compliance. This expertise directly supports the proposed NIH project's multi-tenant cloud architecture and governance requirements.</p>
+        
+        <h4>Key Architectural Contributions:</h4>
+        <ul>
+          <li>Azure Landing Zone Transformation: Translated Azure Landing Zone reference architectures into actionable enterprise frameworks for 3 Fortune 500 healthcare clients, improving data organization efficiency by 21%</li>
+          <li>Governance & Compliance Models: Developed governance frameworks for Databricks analytics platforms and Azure Synapse data lakes, ensuring HIPAA compliance, data lineage tracking, and audit logging</li>
+          <li>TOGAF ADM Implementation: Applied TOGAF Architecture Development Method (ADM) to standardize architecture practices across 15+ enterprise clients</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Additional Information -->
+    <section class="bio-section">
+      <div class="container content">
+        <h2>D. Additional Information: Research Support and/or Scholastic Performance</h2>
+        
+        <h3>Ongoing Research Support:</h3>
+        
+        <h4>Plexusoft LLC Internal R&D (Self-Funded)</h4>
+        <p><strong>Role:</strong> CEO/Principal Investigator<br>
+        <strong>Project Title:</strong> "Oracle APEX-Based Healthcare Management Platform for Residential Care Facilities - Design Phase"<br>
+        <strong>Budget:</strong> $50,000 (2024-2025, company operating budget for design and planning activities)<br>
+        <strong>Period:</strong> January 2024 – December 2025<br>
+        <strong>Goals:</strong> Complete technical design documentation (TDD), user requirements specifications (URS), and architecture validation for multi-tenant SaaS healthcare application serving Texas childcare and elder care facilities.<br>
+        <strong>Status:</strong> Design phase complete; platform development and AI model training will be funded by proposed NIH award.<br>
+        <em>Overlap:</em> No scientific or budgetary overlap with proposed NIH project.</p>
+        
+        <h3>Completed Research Support:</h3>
+        
+        <h4>Prairie View A&M University Graduate Research Assistantship</h4>
+        <p><strong>Role:</strong> Ph.D. Researcher<br>
+        <strong>Period:</strong> August 2024 – Present (expected May 2026)<br>
+        <strong>Budget:</strong> $30,000/year stipend + tuition waiver<br>
+        <strong>Project Title:</strong> "Spatial Deep Learning for Biological Data Classification"<br>
+        <strong>Goals:</strong> Develop novel Graph Neural Network architectures for spatially-resolved transcriptomics analysis.<br>
+        <em>Overlap:</em> No overlap. Dissertation research focuses on spatial omics data; proposed NIH work focuses on temporal healthcare event prediction.</p>
+        
+        <h3>Scholastic Performance:</h3>
+        
+        <p><strong>Graduate GPA:</strong> 3.85/4.0 (Prairie View A&M University, Computer Science M.S. and Electrical Engineering Ph.D. programs)</p>
+        
+        <h4>Key Coursework:</h4>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+          <span class="badge">Machine Learning (A)</span>
+          <span class="badge">Deep Learning for Computer Vision (A)</span>
+          <span class="badge">Advanced Algorithms (A)</span>
+          <span class="badge">Distributed Systems (A-)</span>
+          <span class="badge">Cloud Computing Architecture (A)</span>
+          <span class="badge">Biomedical Data Science (A)</span>
+          <span class="badge">Computational Biology (A)</span>
+          <span class="badge">Public Health Informatics (A)</span>
+          <span class="badge">Nutritional Epidemiology (A)</span>
+          <span class="badge">Statistical Methods for Research (A)</span>
+        </div>
+        
+        <h3>Professional Development:</h3>
+        
+        <h4>Certifications & Training:</h4>
+        <ul>
+          <li>AWS Certified Solutions Architect – Professional (2022, Score: 920/1000)</li>
+          <li>Project Management Professional (PMP), PMI (2019, 35 contact hours)</li>
+          <li>Oracle Database 19c Administrator Certified Associate (2023)</li>
+          <li>Databricks Lakehouse Fundamentals (2021)</li>
+          <li>HIPAA Privacy & Security Training (annual certification, 2024)</li>
+        </ul>
+        
+        <h4>Conference Participation:</h4>
+        <ul>
+          <li>AWS re:Invent 2023 (Las Vegas, NV) – Attended sessions on "Machine Learning on AWS" and "Healthcare Data Security"</li>
+          <li>Databricks Data + AI Summit 2022 (San Francisco, CA) – Presented poster: "Iceberg Table Format for Energy Trading Analytics"</li>
+          <li>Grace Hopper Celebration 2019 (Orlando, FL) – Attended as graduate student scholarship recipient</li>
+        </ul>
+        
+        <h3>Mentorship & Leadership:</h3>
+        <ul>
+          <li>Mentor, Prairie View A&M University Computer Science Undergraduate Research Program (2024-Present) – Advising 2 undergraduate students on machine learning projects</li>
+          <li>Volunteer, Houston Food Bank Data Analytics Program (2023) – Provided pro bono data visualization support using Tableau</li>
+          <li>Speaker, Texas HBCU STEM Conference (2025) – Presented: "From Academia to Entrepreneurship: Building Healthcare Technology Startups"</li>
+        </ul>
+      </div>
+    </section>
+    
+    <!-- Certification -->
+    <section class="bio-section">
+      <div class="container content">
+        <div class="info-box">
+          <h3>CERTIFICATION</h3>
+          <p>I certify that the statements herein are true, complete, and accurate to the best of my knowledge. I am aware that any false, fictitious, or fraudulent statements or claims may subject me to criminal, civil, or administrative penalties. I agree to accept responsibility for the scientific conduct of the project and to provide the required progress reports if a grant is awarded as a result of this application.</p>
+          
+          <p style="margin-top: 1.5rem;"><strong>Signature of Principal Investigator:</strong><br>
+          Olawole Frankfurt Ogunfunminiyi, TOGAF, PMP, MBA, M.S., Ph.D. Candidate</p>
+          
+          <p><strong>eRA Commons Person ID:</strong> 80454331<br>
+          <strong>ORCID:</strong> 0009-0007-4585-5642</p>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 0.9rem; color: #666;"><em>NIH Biosketch Format Page (Rev. 10/2021). For instructions, see <a href="https://grants.nih.gov/grants/forms/biosketch.htm" target="_blank">https://grants.nih.gov/grants/forms/biosketch.htm</a></em></p>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Olawole Frankfurt Ogunfunminiyi. All rights reserved.</p>
+      <p style="margin-top: 1rem;">
+        <a href="https://github.com/frankfurtmacmoses" target="_blank">GitHub</a> |
+        <a href="https://linkedin.com/in/frankfurtogunfunminiyi" target="_blank">LinkedIn</a> |
+        <a href="https://orcid.org/0009-0007-4585-5642" target="_blank">ORCID</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
