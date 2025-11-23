@@ -1,0 +1,56 @@
+# Data files - datasets
+*.csv
+*.tsv
+*.txt
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.bam
+*.sam
+*.vcf
+*.bed
+*.bigWig
+*.bw
+
+# Data directories
+bio-informatics/assignment1/fastq/
+bio-informatics/assignment1/gene_annots/
+bio-informatics/assignment1/results/
+bio-informatics/assignment2/*.csv
+bio-informatics/assignment3/*.csv
+bio-informatics/assignment4/data/
+bio-informatics/assignment4/homework4/data/
+bio-informatics/final_project/data/
+bio-informatics/final_project/results/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.ipynb_checkpoints/
+
+# R
+.Rhistory
+.RData
+.Rproj.user
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Large files
+*.pdf
