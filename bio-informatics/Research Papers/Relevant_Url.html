@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relevant URLs - Bioinformatics Resources</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            color: #764ba2;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+        
+        .url-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .url-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .url-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .url-card a {
+            color: #764ba2;
+            text-decoration: none;
+            word-break: break-all;
+            font-weight: 500;
+        }
+        
+        .url-card a:hover {
+            text-decoration: underline;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+        
+        .info-box p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-box code {
+            background: #fff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #667eea;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #764ba2;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9ecef;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Relevant URLs</h1>
+            <p class="subtitle">Bioinformatics Resources & References</p>
+        </header>
+        
+        <section class="section">
+            <h2>Research Articles</h2>
+            
+            <div class="url-card">
+                <h3>Nature Article</h3>
+                <a href="https://www.nature.com/articles/441398a" target="_blank">
+                    https://www.nature.com/articles/441398a
+                </a>
+            </div>
+            
+            <div class="url-card">
+                <h3>Genome Research</h3>
+                <a href="https://genome.cshlp.org/content/17/6/669.full" target="_blank">
+                    https://genome.cshlp.org/content/17/6/669.full
+                </a>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>Week 5 Hands-On Exercise</h2>
+            
+            <div class="info-box">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Remote Access to PV Intranet</h3>
+                <p>Access skim-compute.pv.pvpanther.net remotely from home:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>Visit: <a href="https://pvamu.teamdynamix.com/TDClient/57/Helpdesk/KB/ArticleDet?ID=490" target="_blank">TDX Help Desk Instructions</a></li>
+                    <li>Direct access: <a href="https://mydesktop.pvamu.edu/" target="_blank">https://mydesktop.pvamu.edu/</a></li>
+                    <li>Choose Horizon (VMWare) or Web-browser access</li>
+                    <li>Login with PV email credentials (ID without @pvamu.edu)</li>
+                    <li>Launch PowerShell to access skim-compute.pv.pvpanther.net</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">Account Activation</h3>
+                <p><strong>Server:</strong> skim-compute.pv.pvpanther.net</p>
+                <p><strong>User-ID:</strong> First letter of first name + full last name (e.g., skim)</p>
+                <p><strong>Password:</strong> <code>eleg6380</code> (change immediately using <code>passwd</code> command)</p>
+            </div>
+            
+            <div class="url-card">
+                <h3>Install Conda</h3>
+                <a href="https://docs.conda.io/projects/conda/en/stable/user-guide/install/linux.html" target="_blank">
+                    https://docs.conda.io/projects/conda/en/stable/user-guide/install/linux.html
+                </a>
+            </div>
+            
+            <div class="url-card">
+                <h3>Install Salmon</h3>
+                <a href="https://anaconda.org/bioconda/salmon" target="_blank">
+                    https://anaconda.org/bioconda/salmon
+                </a>
+            </div>
+            
+            <div class="url-card">
+                <h3>Salmon Getting Started</h3>
+                <a href="https://combine-lab.github.io/salmon/getting_started/" target="_blank">
+                    https://combine-lab.github.io/salmon/getting_started/
+                </a>
+                <p style="margin-top: 0.5rem; color: #666;">Start with "Analyzing your RNA-seq data with Salmon"</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2>Statistical References</h2>
+            
+            <div class="url-card">
+                <h3>Hypergeometric Distribution (Wolfram MathWorld)</h3>
+                <a href="https://mathworld.wolfram.com/HypergeometricDistribution.html" target="_blank">
+                    https://mathworld.wolfram.com/HypergeometricDistribution.html
+                </a>
+            </div>
+            
+            <div class="url-card">
+                <h3>Hypergeometric Distribution (Wikipedia)</h3>
+                <a href="https://en.wikipedia.org/wiki/Hypergeometric_distribution" target="_blank">
+                    https://en.wikipedia.org/wiki/Hypergeometric_distribution
+                </a>
+            </div>
+        </section>
+        
+        <footer>
+            <a href="../index.html" class="back-link">← Back to Bio-Informatics Projects</a>
+            <p style="margin-top: 1rem;">Frankfurt MacMoses | ELEG 6380 - Introduction to Bioinformatics</p>
+        </footer>
+    </div>
+</body>
+</html>
