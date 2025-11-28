@@ -1,0 +1,130 @@
+# ============================================
+# DATASET FILES - Exclude all data files
+# ============================================
+
+# Final Project datasets
+final_project/data/**
+
+# Project One datasets and generated files
+project_one/fastq/**
+project_one/gene_annots/**
+project_one/results/**
+
+# Project Two datasets
+project_two/data/**
+project_two/*.csv
+
+# Project Three datasets
+project_three/data/**
+project_three/*.csv
+
+# Project Four datasets
+project_four/homework4/data.csv
+project_four/homework4/tcga_gbm_counts_example.csv
+project_four/homework4/data/**
+
+# Research Papers data
+Research Papers/data/**
+
+# All common data file extensions
+**/*.csv
+**/*.tsv
+**/*.txt
+**/*.fastq
+**/*.fastq.gz
+**/*.fq
+**/*.fq.gz
+**/*.fa
+**/*.fa.gz
+**/*.fasta
+**/*.fasta.gz
+**/*.gtf
+**/*.gtf.gz
+**/*.gff
+**/*.gff.gz
+
+# ============================================
+# ENVIRONMENT & DEPENDENCIES
+# ============================================
+
+# Python virtual environments
+**/venv/
+**/env/
+**/.venv/
+**/assignment/
+**/pyvenv.cfg
+
+# Conda environments
+**/conda/
+**/.conda/
+
+# Python package directories
+**/site-packages/
+**/dist-packages/
+
+# Executable binaries
+**/bin/
+**/lib/
+**/lib64/
+**/include/
+**/share/
+
+# ============================================
+# GENERATED & TEMPORARY FILES
+# ============================================
+
+# Results and output directories
+**/results/**
+**/output_files/**
+**/outputs/**
+
+# Index files (Salmon, Kallisto, etc.)
+**/*_index/**
+**/*.bin
+**/*.idx
+
+# Jupyter Notebook checkpoints
+**/.ipynb_checkpoints/
+
+# Python cache
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.Python
+
+# ============================================
+# SYSTEM FILES
+# ============================================
+
+# macOS
+**/__MACOSX/
+**/.DS_Store
+**/.AppleDouble
+**/.LSOverride
+
+# Windows
+**/Thumbs.db
+**/ehthumbs.db
+**/Desktop.ini
+
+# Linux
+**/*~
+
+# ============================================
+# KEEP ONLY CODE, NOTEBOOKS, AND DOCS
+# ============================================
+
+# Keep these files (negate patterns)
+!**/README.md
+!**/*.ipynb
+!**/*.py
+!**/*.html
+!**/*.md
+!**/*.tex
+!**/*.pdf
+!**/*.png
+!**/*.jpg
+!**/*.jpeg
+!**/*.docx
+!**/*.pptx
