@@ -68,15 +68,15 @@
 \section*{Summary}
 \addcontentsline{toc}{section}{Executive Summary}
 
-This report presents a comprehensive bioinformatics analysis of bladder cancer (TCGA-BLCA) RNA-seq data, focusing on differential gene expression, clustering analysis, and functional enrichment to identify molecular signatures distinguishing Low Grade (LG) from High Grade (HG) tumors. The analysis pipeline identified 28,023 genes after quality filtering and revealed 5,800 differentially expressed genes (DEGs) using DESeq2, highlighting critical biological pathways involved in cancer progression.
+This report presents a comprehensive bioinformatics analysis of bladder cancer (TCGA-BLCA) RNA-seq data, focusing on differential gene expression, clustering analysis, and functional enrichment to identify molecular signatures distinguishing Low Grade (LG) from High Grade (HG) tumors. The analysis pipeline identified 15,967 genes after quality filtering and revealed 2,146 differentially expressed genes (DEGs) using DESeq2, highlighting critical biological pathways involved in cancer progression.
 
 \subsection*{Key Findings:}
 \begin{itemize}
-    \item 5,800 DEGs identified using DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$): 1,823 upregulated, 3,977 downregulated in High Grade tumors
-    \item Optimal clustering: 2 clusters with high entropy (0.9816), indicating poor unsupervised separation of tumor grades
-    \item PC1+PC2 explain 23.21\% variance on all genes, 38.32\% on DEGs only
-    \item 247 significant GO:BP terms enriched, revealing immune response, proliferation, and ECM remodeling pathways
-    \item Key methodological corrections: count-based filtering, DESeq2 instead of t-tests, proper entropy calculation
+    \item 2,146 DEGs identified using DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$): 800 upregulated, 1,346 downregulated in High Grade tumors
+    \item Optimal clustering: 2 clusters with moderate entropy (0.3902), showing good separation of tumor grades
+    \item PC1+PC2 explain 22.77\% variance on all genes, 37.77\% on DEGs only
+    \item 153 significant GO:BP terms enriched, revealing immune response, proliferation, and ECM remodeling pathways
+    \item Key methodological corrections: proper count-based filtering (removes genes not expressed in $\geq$10\% samples), DESeq2 instead of t-tests, proper entropy calculation
 \end{itemize}
 
 \newpage
@@ -101,7 +101,7 @@ Bladder cancer (BLCA) is one of the most common urological malignancies, with si
 \begin{itemize}
     \item Source: TCGA-BLCA RNA-seq count data
     \item Samples: 90 tumor samples (50 Low Grade, 40 High Grade)
-    \item Features: 60,660 genes (initial) $\rightarrow$ 28,023 genes (after filtering)
+    \item Features: 60,660 genes (initial) $\rightarrow$ 15,967 genes (after filtering)
     \item Data Format: Raw count matrix with gene annotations (gene\_type, gene\_name, hgnc\_id)
 \end{itemize}
 
@@ -112,15 +112,17 @@ Bladder cancer (BLCA) is one of the most common urological malignancies, with si
 \subsubsection{Gene Filtering}
 Criteria Applied:
 \begin{itemize}
-    \item Minimum expression: raw count $>$ 5 in $\geq$10\% of samples (9 samples)
-    \item Rationale: Count-based filtering removes lowly expressed genes without bias toward highly expressed genes. This approach ensures genes are excluded based on detection frequency rather than relative abundance.
+    \item Instruction: ``Filter out genes that are not expressed (count $\leq$ 5) in at least 10\% of the samples''
+    \item Implementation: Remove genes where count $\leq$ 5 in $\geq$10\% of samples (9 samples)
+    \item Equivalently: Keep genes where count $\leq$ 5 in $<$10\% of samples
+    \item Rationale: This strict filtering ensures only genes expressed above threshold in most samples are retained, reducing noise from lowly expressed genes.
 \end{itemize}
 
 Results:
 \begin{itemize}
     \item Original: 60,660 genes
-    \item Retained: 28,023 genes (46.1\%)
-    \item Removed: 32,637 genes (53.8\%)
+    \item Retained: 15,967 genes (26.3\%)
+    \item Removed: 44,693 genes (73.7\%)
 \end{itemize}
 
 \subsubsection{Normalization}
@@ -140,23 +142,23 @@ Justification: CPM normalization accounts for sequencing depth differences betwe
 \subsubsection{Principal Component Analysis (PCA)}
 Implementation:
 \begin{itemize}
-    \item Performed on $\log_2$CPM values (28,023 genes)
+    \item Performed on $\log_2$CPM values (15,967 genes)
     \item StandardScaler preprocessing (mean=0, variance=1)
     \item Analyzed PC1 and PC2 for visualization
 \end{itemize}
 
 Variance Explained (All Genes):
 \begin{itemize}
-    \item PC1: 15.89\%
-    \item PC2: 7.32\%
-    \item Cumulative: 23.21\%
+    \item PC1: 13.59\%
+    \item PC2: 9.18\%
+    \item Cumulative: 22.77\%
 \end{itemize}
 
 Variance Explained (DEGs Only):
 \begin{itemize}
-    \item PC1: 26.85\%
-    \item PC2: 11.47\%
-    \item Cumulative: 38.32\%
+    \item PC1: 28.72\%
+    \item PC2: 9.04\%
+    \item Cumulative: 37.77\%
 \end{itemize}
 
 Interpretation: Higher variance explained by DEGs confirms their discriminative power for tumor grade classification.
@@ -174,9 +176,9 @@ Parameters:
 
 Results:
 \begin{itemize}
-    \item Cluster 0: 89 samples (98.9\%)
-    \item Cluster 1: 1 sample (1.1\%)
-    \item Silhouette Score: 0.3088 (optimal k=2)
+    \item Cluster 0: 53 samples (58.9\%): 48 Low Grade, 5 High Grade
+    \item Cluster 1: 37 samples (41.1\%): 2 Low Grade, 35 High Grade
+    \item Silhouette Score: 0.0721 (optimal k=2)
 \end{itemize}
 
 \subsubsection{Hierarchical Clustering}
@@ -196,13 +198,20 @@ Evaluation Metrics:
 \textbf{Metric} & \textbf{K-means} & \textbf{Hierarchical} \\
 \midrule
 Optimal k & 2 & 2 \\
-Silhouette Score (k=2) & 0.3088 & 0.2959 \\
-Total Entropy & 0.9816 & -- \\
+Silhouette Score (k=2) & 0.0721 & 0.4544 \\
+Total Entropy & 0.3902 & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Conclusion: Both methods identified k=2 as optimal. K-means had slightly higher silhouette score. High entropy (0.9816) indicates poor separation of tumor grades by unsupervised clustering.
+Conclusion: Both methods identified k=2 as optimal. Hierarchical clustering had significantly higher silhouette score (0.4544 vs 0.0721). Moderate entropy (0.3902) indicates reasonable separation of tumor grades by unsupervised clustering, with Cluster 0 being 90.6\% low-grade and Cluster 1 being 94.6\% high-grade.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{results/task2_silhouette_analysis.png}
+\caption{Silhouette analysis for optimal cluster selection. Left: K-means clustering shows optimal k=2 with score 0.0721. Right: Hierarchical clustering shows optimal k=2 with score 0.4544, indicating stronger cluster separation.}
+\label{fig:silhouette}
+\end{figure}
 
 \subsubsection{Entropy Calculation}
 Following the course lecture notes, cluster entropy is calculated as:
@@ -298,6 +307,13 @@ Key Findings:
 
 Biological Interpretation: PC1 represents a ``tumor grade progression axis'' capturing coordinated expression changes in proliferation, differentiation, and microenvironment remodeling genes.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{results/task1_pca_plot.png}
+\caption{PCA analysis of TCGA-BLCA samples. Left: PCA scatter plot showing partial separation of Low Grade (blue) and High Grade (red) tumors along PC1 and PC2. Right: Scree plot showing variance explained by the first 10 principal components.}
+\label{fig:pca}
+\end{figure}
+
 \subsection{Clustering Analysis Results}
 
 \subsubsection{Cluster Composition}
@@ -309,20 +325,20 @@ Biological Interpretation: PC1 represents a ``tumor grade progression axis'' cap
 \toprule
 \textbf{Cluster} & \textbf{Low Grade} & \textbf{High Grade} & \textbf{Total} & \textbf{Entropy} \\
 \midrule
-Cluster 0 & 49 (55.1\%) & 40 (44.9\%) & 89 & 0.9926 \\
-Cluster 1 & 1 (100\%) & 0 (0\%) & 1 & 0.0000 \\
+Cluster 0 & 48 (90.6\%) & 5 (9.4\%) & 53 & 0.4508 \\
+Cluster 1 & 2 (5.4\%) & 35 (94.6\%) & 37 & 0.3034 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Total Weighted Entropy: 0.9816 (0 = perfect, 1 = random)
+Total Weighted Entropy: 0.3902 (0 = perfect, 1 = random)
 
 Interpretation:
 \begin{itemize}
-    \item Cluster 0 contains almost all samples with near-maximal entropy (poor separation)
-    \item Cluster 1 is a single-sample outlier cluster
-    \item High entropy (0.9816) indicates unsupervised clustering cannot separate tumor grades effectively
-    \item Motivates need for supervised differential expression analysis
+    \item Cluster 0 enriched for Low Grade (90.6\%) with moderate entropy (0.4508)
+    \item Cluster 1 enriched for High Grade (94.6\%) with lower entropy (0.3034)
+    \item Moderate total entropy (0.3902) indicates reasonable separation of tumor grades
+    \item Unsupervised clustering partially captures biological differences between grades
 \end{itemize}
 
 \subsubsection{Cluster Profiles}
@@ -351,10 +367,10 @@ Cluster 2 (HG-enriched):
 \toprule
 \textbf{Category} & \textbf{Count} & \textbf{Percentage} \\
 \midrule
-Total Tested & 28,023 & 100\% \\
-FDR $<$ 0.01 \& $|\log_2\text{FC}| > 1$ & \textbf{5,800} & \textbf{20.7\%} \\
-Upregulated (HG) & 1,823 & 31.4\% \\
-Downregulated (HG) & 3,977 & 68.6\% \\
+Total Tested & 15,967 & 100\% \\
+FDR $<$ 0.01 \& $|\log_2\text{FC}| > 1$ & \textbf{2,146} & \textbf{13.4\%} \\
+Upregulated (HG) & 800 & 37.3\% \\
+Downregulated (HG) & 1,346 & 62.7\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -406,6 +422,20 @@ ENSG00000197273 & -8.29 & $2.8 \times 10^{-33}$ & Low-grade marker \\
 
 Biological Interpretation: Downregulated genes are enriched for differentiation markers, indicating loss of normal urothelial identity in high-grade tumors (dedifferentiation).
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{results/task3_volcano_plot.png}
+\caption{Volcano plot of differential expression analysis. Red points indicate upregulated genes (800), blue points indicate downregulated genes (1,346), and gray points are non-significant. Significance thresholds: FDR < 0.01 and |log$_2$FC| > 1.}
+\label{fig:volcano}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{results/task3_pca_degs.png}
+\caption{PCA analysis using only the 2,146 significant DEGs. Left: Clear separation of tumor grades along PC1 (28.72\% variance). Right: Scree plot showing improved variance capture compared to all-gene PCA.}
+\label{fig:pca_degs}
+\end{figure}
+
 \subsection{Gene Ontology Enrichment Analysis}
 
 \subsubsection{Biological Process (GO:BP) - Top 10 Terms}
@@ -438,7 +468,14 @@ Leukocyte migration & 31/234 & $4.1 \times 10^{-8}$ & 31 \\
 Wound healing & 26/189 & $7.3 \times 10^{-8}$ & 26 \\
 \end{longtable}
 
-Total Significant Terms: 247 GO:BP terms (adj. p $<$ 0.05)
+Total Significant Terms: 153 GO:BP terms (adj. p $<$ 0.05)
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{results/task4_go_enrichment_plots.png}
+\caption{Gene Ontology enrichment analysis. Top: Bar plot of top 20 enriched GO Biological Process terms ranked by -log$_{10}$(adjusted p-value). Bottom: Dot plot showing relationship between gene count, significance, and adjusted p-value for enriched terms.}
+\label{fig:go_enrichment}
+\end{figure}
 
 \subsubsection{Molecular Function (GO:MF) - Top Terms}
 
@@ -534,7 +571,7 @@ Novel Findings in This Analysis:
 \subsection{Major Findings}
 
 \subsubsection{Molecular Heterogeneity in Bladder Cancer}
-The high weighted entropy (0.9816) and poor unsupervised clustering separation indicate that global gene expression patterns do not cleanly distinguish tumor grades. This suggests that grade-specific differences are concentrated in specific pathways (as shown by improved PCA separation with DEGs only) rather than representing wholesale transcriptional changes. This aligns with emerging concepts of intratumoral heterogeneity and molecular plasticity.
+The moderate weighted entropy (0.3902) and reasonable unsupervised clustering separation (Cluster 0: 90.6\% LG, Cluster 1: 94.6\% HG) indicate that global gene expression patterns can partially distinguish tumor grades. The improved PCA separation with DEGs only (37.77\% vs 22.77\% variance) confirms that grade-specific differences are concentrated in specific pathways. This demonstrates that while some molecular heterogeneity exists, distinct transcriptional programs characterize high-grade vs. low-grade tumors.
 
 \subsubsection{Dual Axes of Progression}
 Two independent processes distinguish HG from LG tumors:
@@ -599,9 +636,9 @@ This comprehensive bioinformatics analysis successfully identified and character
 
 \subsection{Key Deliverables:}
 \begin{enumerate}
-    \item 5,800 high-confidence DEGs identified with DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$)
-    \item Clustering validation showing high entropy (0.9816), motivating supervised analysis
-    \item 247 enriched GO:BP terms revealing cancer-relevant pathways
+    \item 2,146 high-confidence DEGs identified with DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$)
+    \item Clustering validation showing moderate entropy (0.3902), demonstrating reasonable separation
+    \item 153 enriched GO:BP terms revealing cancer-relevant pathways
     \item Publication-quality visualizations (PCA, volcano plots, heatmaps, enrichment plots)
     \item Reproducible Python pipeline documented in Jupyter notebook
 \end{enumerate}
