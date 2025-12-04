@@ -76,11 +76,11 @@
   - 40 High Grade tumors
 - **Data type:** RNA-seq raw count data
 - **Initial features:** 60,660 genes
-- **Post-filtering:** 18,590 genes (30.6% retained)
+- **Post-filtering:** 15,967 genes (26.3% retained)
 
 **Visuals:**
 - Sample composition pie chart (LG vs. HG)
-- Flowchart: 60,660 genes → Filtering → 18,590 genes
+- Flowchart: 60,660 genes → Filtering → 15,967 genes
 
 **Talking Points:**
 > "We started with the comprehensive TCGA dataset, which provides high-quality RNA-seq data. Our filtering step removed low-expression genes that would introduce noise."
@@ -119,7 +119,7 @@ GO Enrichment
 #### **Slide 6: Preprocessing Methods** (1.5 minutes)
 **Content:**
 - **Gene Filtering Criteria:**
-  - Minimum expression: ≥1 CPM in ≥50% of samples
+  - Minimum expression: count > 5 in at least 10% of samples
   - Rationale: Remove noise, improve statistical power
   
 - **Normalization Method:**
@@ -170,7 +170,7 @@ GO Enrichment
 #### **Slide 8: Data Quality Assessment** (1 minute)
 **Content:**
 - **Post-filtering summary:**
-  - 18,590 genes retained (30.6%)
+  - 15,967 genes retained (26.3%)
   - Mean library size: 12.5M reads
   - No major batch effects detected
 
@@ -258,7 +258,7 @@ GO Enrichment
 
 **Visuals:**
 - **Main figure:** Clustered heatmap of DEG expression
-  - Rows: 1,439 DEGs
+  - Rows: 2,146 DEGs
   - Columns: 90 samples (annotated by cluster and grade)
   - Color bar: Red (high expression) to Blue (low expression)
 - **Inset:** Stacked bar chart showing cluster composition
@@ -273,22 +273,22 @@ GO Enrichment
 #### **Slide 13: DEG Overview** (1.5 minutes)
 **Content:**
 - **Summary statistics:**
-  - **Total tested:** 18,590 genes
-  - **FDR < 0.01:** 2,847 genes (15.3%)
-  - **FDR < 0.01 & |log2FC| > 1:** **1,439 DEGs (7.7%)**
-    - **Upregulated (HG):** 574 genes (39.9%)
-    - **Downregulated (HG):** 865 genes (60.1%)
+  - **Total tested:** 15,967 genes
+  - **FDR < 0.01:** 3,892 genes (24.4%)
+  - **FDR < 0.01 & |log2FC| > 1:** **2,146 DEGs (13.4%)**
+    - **Upregulated (HG):** 800 genes (37.3%)
+    - **Downregulated (HG):** 1,346 genes (62.7%)
 
 - **Fold change range:**
   - Max upregulation: 8.4 log2FC (269-fold)
   - Max downregulation: -7.2 log2FC (147-fold)
 
 **Visuals:**
-- **Funnel diagram:** 18,590 → 2,847 → **1,439 DEGs**
+- **Funnel diagram:** 15,967 → 3,892 → **2,146 DEGs**
 - Pie chart: Upregulated vs. Downregulated
 
 **Talking Points:**
-> "Out of nearly 19,000 genes, we identified 1,439 high-confidence DEGs. Notably, more genes are downregulated in high-grade tumors, suggesting loss of differentiation."
+> "Out of nearly 16,000 genes, we identified 2,146 high-confidence DEGs. Notably, more genes are downregulated in high-grade tumors, suggesting loss of differentiation."
 
 #### **Slide 14: Volcano Plot** (2 minutes)
 **Content:**
@@ -307,7 +307,7 @@ GO Enrichment
 - **High-quality volcano plot** with:
   - Labeled top genes (MMP11, UPK1A, COL11A1, GATA3)
   - Legend explaining colors
-  - Count annotations (574 up, 865 down)
+  - Count annotations (800 up, 1,346 down)
 
 **Talking Points:**
 > "The volcano plot visualizes statistical significance versus biological effect size. The genes in the upper corners are our strongest candidates—highly significant and large fold changes."
@@ -356,7 +356,7 @@ GO Enrichment
 
 #### **Slide 17: GO Enrichment - Biological Process** (2.5 minutes)
 **Content:**
-- **75 significant GO:BP terms identified** (FDR < 0.05)
+- **153 significant GO:BP terms identified** (FDR < 0.05)
 - **Top 10 enriched pathways:**
   1. Cell proliferation (45 genes, p=2.3e-12)
   2. Extracellular matrix organization (38 genes, p=4.7e-11)
@@ -411,10 +411,10 @@ GO Enrichment
 #### **Slide 19: Key Findings Summary** (1.5 minutes)
 **Content:**
 - **Major discoveries:**
-  1. **1,439 DEGs identified** with high confidence
+  1. **2,146 DEGs identified** with high confidence
   2. **Two molecular clusters** with moderate purity (entropy=0.305)
   3. **PC1 explains 35% variance** on DEGs (clear grade separation)
-  4. **75 enriched GO:BP terms** highlighting cancer pathways
+  4. **153 enriched GO:BP terms** highlighting cancer pathways
   5. **Four actionable signatures** (proliferation, ECM, immune, differentiation)
 
 - **Biological insight:**
@@ -481,7 +481,7 @@ GO Enrichment
 #### **Slide 22: Final Conclusions** (1 minute)
 **Content:**
 - **Take-home messages:**
-  1. Successfully identified **1,439 high-confidence DEGs** distinguishing bladder cancer grades
+  1. Successfully identified **2,146 high-confidence DEGs** distinguishing bladder cancer grades
   2. Molecular heterogeneity suggests **continuum rather than discrete subtypes**
   3. Three major processes define HG tumors: **proliferation, ECM remodeling, immune activation**
   4. Findings provide **actionable targets for precision medicine**
