@@ -8,23 +8,23 @@
 
 ## Abstract
 
-**Motivation:** Bladder cancer (BLCA) exhibits significant molecular heterogeneity between low-grade and high-grade tumors. Understanding the transcriptomic differences between these subtypes is crucial for identifying potential biomarkers and therapeutic targets.
+**Motivation:** Bladder cancer shows considerable variation between low-grade and high-grade tumors at the molecular level. We sought to understand these transcriptomic differences to better identify biomarkers and potential therapeutic targets.
 
-**Results:** We performed comprehensive transcriptomic analysis on TCGA-BLCA dataset comprising 90 samples (50 low-grade, 40 high-grade). After filtering lowly expressed genes (removing genes not expressed in ≥10% samples), 15,967 genes were retained for analysis. Unsupervised clustering identified 2 optimal clusters with entropy of 0.3902, indicating good separation between tumor grades. DESeq2 differential expression analysis revealed 2,146 significantly dysregulated genes (FDR < 0.01, |logFC| > 1), with 1,346 downregulated and 800 upregulated in high-grade tumors. Gene ontology enrichment analysis identified 153 pathways related to immune response, cell proliferation, and tissue development.
+**Results:** Our transcriptomic analysis of the TCGA-BLCA dataset included 90 tumor samples—50 low-grade and 40 high-grade. We filtered out genes with minimal expression (those not expressed in at least 10% of samples), leaving 15,967 genes for downstream analysis. Through unsupervised clustering, we found 2 optimal clusters with an entropy of 0.3902, suggesting reasonable separation between tumor grades. Using DESeq2 for differential expression, we identified 2,146 genes showing significant changes (FDR < 0.01, |logFC| > 1), with 1,346 genes downregulated and 800 upregulated in high-grade compared to low-grade tumors. Gene ontology enrichment revealed 153 biological process pathways involved in immune response, cell proliferation, and tissue development.
 
-**Availability:** Data available from TCGA-BLCA project. Analysis code available upon request.
+**Availability:** Data from the TCGA-BLCA project. Analysis scripts available upon request.
 
-**Keywords:** Bladder cancer, TCGA-BLCA, Differential expression analysis, DESeq2, Clustering, Gene expression, Transcriptomics
+**Keywords:** Bladder cancer, TCGA-BLCA, Differential expression, DESeq2, Clustering, Transcriptomics
 
 ---
 
 ## 1. Introduction
 
-Bladder cancer (BLCA) is among the most common malignancies worldwide, with significant molecular heterogeneity that impacts prognosis and treatment response. The distinction between low-grade and high-grade bladder tumors is clinically critical, as high-grade tumors exhibit more aggressive behavior, higher recurrence rates, and poorer patient outcomes. Understanding the molecular mechanisms underlying these differences is essential for developing targeted therapeutic strategies and improving patient stratification.
+Bladder cancer ranks among the most common malignancies globally and shows substantial molecular diversity that affects both prognosis and how patients respond to treatment. Distinguishing between low-grade and high-grade bladder tumors matters clinically because high-grade tumors behave more aggressively, recur more frequently, and result in worse outcomes for patients. Understanding what drives these differences at the molecular level could help us develop better targeted therapies and improve how we classify patients for treatment.
 
-The Cancer Genome Atlas (TCGA) project has generated comprehensive multi-omic datasets, including RNA-seq data, that enable systematic investigation of gene expression differences across cancer subtypes. In this study, we perform integrative transcriptomic analysis of TCGA-BLCA samples to: (1) characterize the global gene expression landscape through dimensionality reduction and unsupervised clustering, (2) identify differentially expressed genes (DEGs) between low-grade and high-grade tumors using rigorous statistical methods, and (3) interpret the biological significance of DEGs through gene ontology enrichment analysis.
+The Cancer Genome Atlas (TCGA) project has provided extensive multi-omic datasets, including RNA sequencing data, which allow us to systematically examine gene expression patterns across different cancer types. For this study, we analyzed TCGA-BLCA samples with three main goals: first, to characterize the overall gene expression patterns using dimensionality reduction and unsupervised clustering; second, to identify genes that are differentially expressed between low-grade and high-grade tumors using robust statistical approaches; and third, to understand the biological meaning of these gene expression changes through pathway enrichment analysis.
 
-Our analysis employs established bioinformatics methods including CPM normalization for gene expression, PCA for dimensionality reduction, K-means clustering with silhouette analysis for optimal cluster identification, DESeq2 for differential expression with proper RNA-seq count modeling, and gene set enrichment analysis for pathway interpretation. This comprehensive approach provides insights into the molecular distinctions between bladder cancer subtypes and identifies potential biomarkers and therapeutic targets.
+We used several standard bioinformatics approaches: CPM normalization to adjust for differences in sequencing depth, principal component analysis (PCA) to reduce data complexity, K-means clustering combined with silhouette analysis to find natural groupings in the data, DESeq2 to properly model count-based differential expression, and gene ontology enrichment to interpret biological pathways. Together, these methods help reveal the molecular features that distinguish bladder cancer subtypes and point to potential biomarkers and therapeutic targets.
 
 ---
 
@@ -32,71 +32,73 @@ Our analysis employs established bioinformatics methods including CPM normalizat
 
 ### 2.1 Data Acquisition and Preprocessing
 
-Gene expression count data and clinical annotations were obtained from the TCGA-BLCA project. The dataset comprised 90 tumor samples (50 low-grade, 40 high-grade) with RNA-seq read counts for protein-coding genes. Sample tumor grades were obtained from the class annotation file.
+We obtained gene expression count data and clinical information from the TCGA-BLCA project. The dataset includes 90 tumor samples—50 low-grade and 40 high-grade—with RNA-seq read counts for protein-coding genes. Tumor grade information came from the class annotation file.
 
 #### 2.1.1 Gene Filtering
 
-To remove lowly expressed genes that contribute noise to downstream analyses, we applied the assignment-specified filtering strategy: "Filter out genes that are not expressed (count ≤ 5) in at least 10% of the samples". This means genes where count ≤ 5 in ≥10% of samples (≥9 samples) were removed. Equivalently, only genes with count ≤ 5 in <10% of samples were retained. This strict filtering approach ensures that genes with minimal expression across the cohort are excluded while preserving biologically relevant genes. After filtering, 15,967 genes were retained for analysis from an initial set of over 60,000 transcripts.
+Lowly expressed genes can add noise to the analysis, so we filtered them out following the guideline: "Filter out genes that are not expressed (count ≤ 5) in at least 10% of the samples." In practical terms, we removed genes where the count was 5 or less in 9 or more samples (that's 10% of our 90 samples). Put another way, we only kept genes that had counts above 5 in at least 90% of samples. This stringent filtering removes genes with minimal expression while keeping those that are biologically relevant. Starting with over 60,000 transcripts, we ended up with 15,967 genes for our analysis.
 
 #### 2.1.2 Normalization
 
-Count data were normalized using Counts Per Million (CPM) to account for differences in library sizes across samples:
+To account for differences in sequencing depth between samples, we normalized the count data using Counts Per Million (CPM):
 
 ```
 CPM_ij = (count_ij / Σ_k count_kj) × 10^6
 ```
 
-where count_ij is the raw count for gene i in sample j. For visualization and clustering analyses, we applied log transformation with a prior count of 2:
+where count_ij represents the raw count for gene i in sample j. For visualization and clustering, we log-transformed the CPM values using a prior count of 2:
 
 ```
 log2CPM_ij = log2(CPM_ij + 2)
 ```
 
+This transformation helps stabilize variance and makes the data more suitable for downstream analyses.
+
 ### 2.2 Dimensionality Reduction and Clustering
 
 #### 2.2.1 Principal Component Analysis
 
-PCA was performed on standardized log₂CPM values to reduce dimensionality and visualize global expression patterns. Samples were standardized using z-score normalization prior to PCA. The first 10 principal components were computed, and variance explained by each component was evaluated.
+We applied PCA to the standardized log₂CPM values to reduce the dimensionality of our data and visualize overall expression patterns. Before running PCA, we standardized samples using z-score normalization. We computed the first 10 principal components and looked at how much variance each one explained.
 
 #### 2.2.2 Optimal Cluster Determination
 
-To identify natural groupings in the data, we performed K-means clustering with k ranging from 2 to 10. For each k, the silhouette score was calculated:
+To find natural groupings in the expression data, we ran K-means clustering trying k values from 2 to 10. For each k, we calculated the silhouette score:
 
 ```
 s(i) = (b(i) - a(i)) / max{a(i), b(i)}
 ```
 
-where a(i) is the mean intra-cluster distance and b(i) is the mean nearest-cluster distance for sample i. The optimal k was selected as the value maximizing the mean silhouette score. We also performed hierarchical clustering with average linkage for comparison.
+where a(i) is how far a sample is from others in its cluster on average, and b(i) is how far it is from samples in the nearest other cluster. We picked the k that gave the highest average silhouette score. We also tried hierarchical clustering with average linkage to see how the results compared.
 
 #### 2.2.3 Cluster Quality Assessment
 
-Cluster quality was assessed using entropy, which measures the agreement between predicted clusters and true tumor grades. For each cluster j, we computed:
+We assessed how well our clusters matched the actual tumor grades using entropy, which measures agreement between cluster assignments and true labels. For each cluster j, we calculated:
 
 ```
 e_j = -Σ_i p_ij log2(p_ij)
 ```
 
-where p_ij is the proportion of samples in cluster j belonging to true class i. Total entropy was calculated as the weighted average:
+where p_ij is the fraction of samples in cluster j that actually belong to grade i. Total entropy is the weighted average across all clusters:
 
 ```
 E = Σ_j (m_j/m) × e_j
 ```
 
-where m_j is the size of cluster j and m is the total number of samples. Lower entropy indicates better alignment between clusters and true labels.
+where m_j is the number of samples in cluster j and m is the total sample count. Lower entropy means better agreement between our clusters and the real tumor grades.
 
 ### 2.3 Differential Expression Analysis
 
 #### 2.3.1 DESeq2 Analysis
 
-Differential expression analysis was performed using DESeq2, which models RNA-seq count data using a negative binomial distribution. DESeq2 accounts for library size differences, estimates gene-wise dispersion, and applies shrinkage to improve stability of log fold change estimates. The statistical model is:
+For differential expression, we used DESeq2, which models RNA-seq count data with a negative binomial distribution. DESeq2 handles several important issues: it accounts for differences in library sizes, estimates how much each gene varies, and shrinks fold change estimates to make them more reliable. The statistical model looks like this:
 
 ```
 K_ij ~ NB(μ_ij, α_i)
 ```
 
-where K_ij is the count for gene i in sample j, μ_ij is the mean, and α_i is the dispersion parameter. Wald tests were used to assess significance, with p-values adjusted for multiple testing using the Benjamini-Hochberg procedure.
+where K_ij is the count for gene i in sample j, μ_ij is the expected value, and α_i captures the dispersion. We used Wald tests to check significance and adjusted p-values for multiple testing using the Benjamini-Hochberg method.
 
-Genes were considered significantly differentially expressed if they met the criteria: adjusted p-value (FDR) < 0.01 and absolute log₂ fold change > 1.
+We considered a gene significantly differentially expressed if it had an adjusted p-value (FDR) below 0.01 and an absolute log₂ fold change greater than 1.
 
 ### 2.4 Gene Ontology Enrichment Analysis
 
@@ -112,7 +114,7 @@ The TCGA-BLCA dataset comprised 90 tumor samples with known tumor grades: 50 low
 
 ### 3.2 Global Gene Expression Patterns
 
-Principal component analysis of log₂CPM-normalized expression revealed the dominant axes of variation in the dataset. PC1 and PC2 explained 13.59% and 9.18% of total variance, respectively, for a cumulative variance of 22.77%. The PCA scatter plot showed partial separation between low-grade and high-grade samples, with considerable overlap indicating molecular heterogeneity within tumor grades. The scree plot demonstrated that variance was distributed across multiple components rather than concentrated in the first few PCs, suggesting complex underlying biological processes.
+When we ran PCA on the log₂CPM-normalized expression data, we found that PC1 and PC2 captured 13.59% and 9.18% of the total variance, respectively—adding up to 22.77%. Looking at the PCA scatter plot, low-grade and high-grade samples showed some separation, though there was still considerable overlap. This suggests molecular heterogeneity exists even within each tumor grade. The scree plot showed that variance spread across multiple components rather than being concentrated in just the first few, which makes sense given the complexity of cancer biology.
 
 ![PCA Analysis](results/task1_pca_plot.png)
 **Figure 1:** PCA analysis of TCGA-BLCA samples. Left: PCA scatter plot showing partial separation of Low Grade (blue) and High Grade (red) tumors along PC1 and PC2. Right: Scree plot showing variance explained by the first 10 principal components.
@@ -121,16 +123,16 @@ Principal component analysis of log₂CPM-normalized expression revealed the dom
 
 #### 3.3.1 Optimal Cluster Identification
 
-Silhouette analysis was performed for K-means and hierarchical clustering with k ranging from 2 to 10. For K-means clustering, silhouette scores ranged from 0.0721 (k=2) to 0.0412 (k=9), with the maximum score of 0.0721 at k=2. For hierarchical clustering, silhouette scores ranged from 0.4544 (k=2) to 0.0500 (k=10), achieving maximum at k=2. Both methods consistently identified k=2 as optimal, with hierarchical clustering showing stronger separation, suggesting two natural groupings in the expression data.
+We tested both K-means and hierarchical clustering with k ranging from 2 to 10 clusters. For K-means, silhouette scores went from 0.0721 at k=2 down to 0.0412 at k=9, with the best score at k=2. Hierarchical clustering performed better overall, with scores ranging from 0.4544 at k=2 down to 0.0500 at k=10, also peaking at k=2. Both methods pointed to two natural groups in the data, though hierarchical clustering showed clearer separation between them.
 
 ![Silhouette Analysis](results/task2_silhouette_analysis.png)
 **Figure 2:** Silhouette analysis for optimal cluster selection. Left: K-means clustering shows optimal k=2 with score 0.0721. Right: Hierarchical clustering shows optimal k=2 with score 0.4544, indicating stronger cluster separation.
 
 #### 3.3.2 Cluster Composition and Quality
 
-Using K-means with k=2, Cluster 0 contained 53 samples (5 high-grade, 48 low-grade) while Cluster 1 contained 37 samples (35 high-grade, 2 low-grade). The cluster distribution shows good enrichment for each tumor grade, with Cluster 0 being 90.6% low-grade and Cluster 1 being 94.6% high-grade.
+When we used K-means with k=2, Cluster 0 ended up with 53 samples (48 low-grade and 5 high-grade), while Cluster 1 had 37 samples (35 high-grade and 2 low-grade). This represents pretty good enrichment—Cluster 0 was 90.6% low-grade and Cluster 1 was 94.6% high-grade.
 
-Entropy analysis quantified the alignment between cluster assignments and true tumor grades. Cluster 0 had entropy e₀ = 0.4508, and Cluster 1 had entropy e₁ = 0.3034. The total weighted entropy was E = 0.3902, normalized as 0.3902 relative to maximum possible entropy per cluster (log₂(2) = 1.0). This moderate entropy indicates reasonable separation of tumor grades by unsupervised clustering, demonstrating that molecular signatures can partially distinguish the two grades without supervision.
+We quantified how well the clusters matched actual tumor grades using entropy. Cluster 0 had an entropy of 0.4508, and Cluster 1 had an entropy of 0.3034. The overall weighted entropy came out to 0.3902, which is moderate (where 0 is perfect and 1 is random). This tells us that unsupervised clustering does a reasonable job separating tumor grades, showing that molecular signatures can distinguish between the two grades even without using the labels.
 
 ![Cluster Visualization](results/task2_cluster_visualization.png)
 **Figure 3:** Cluster visualization in PCA space. Left: K-means clustering with k=2 showing cluster assignments. Right: True tumor grade labels, demonstrating good agreement between unsupervised clustering and clinical grades.
@@ -145,32 +147,35 @@ Entropy analysis quantified the alignment between cluster assignments and true t
 
 #### 3.4.1 DESeq2 Identifies Extensive Transcriptional Dysregulation
 
-DESeq2 analysis comparing high-grade versus low-grade tumors identified 2,146 significantly differentially expressed genes (FDR < 0.01, |log₂FC| > 1) out of 15,967 genes tested (13.4%). Of these, 1,346 genes (62.7%) were downregulated and 800 genes (37.3%) were upregulated in high-grade tumors relative to low-grade tumors. The magnitude of dysregulation ranged from log₂FC = -9.54 to +9.54, indicating dramatic expression changes for certain genes.
+When we compared high-grade to low-grade tumors using DESeq2, we found 2,146 genes with significant expression changes (FDR < 0.01, |log₂FC| > 1) out of 15,967 tested genes—that's about 13.4%. Most of these changes involved downregulation: 1,346 genes (62.7%) went down in high-grade tumors, while 800 genes (37.3%) went up. Some genes showed really dramatic shifts, with fold changes ranging from -9.54 to +9.54 on the log₂ scale.
 
-Top upregulated genes in high-grade tumors included ENSG00000231683 (log₂FC = 9.54, FDR = 2.8e-15), ENSG00000185479 (log₂FC = 9.45, FDR = 3.8e-67), and ENSG00000170454 (log₂FC = 8.58, FDR = 4.7e-36). Top downregulated genes included ENSG00000260676 (log₂FC = -9.54, FDR = 3.2e-12), ENSG00000166863 (log₂FC = -9.35, FDR = 1.8e-58), and ENSG00000162877 (log₂FC = -8.69, FDR = 1.7e-66).
+The most upregulated genes in high-grade tumors were ENSG00000231683 (log₂FC = 9.54, FDR = 2.8e-15), ENSG00000185479 (log₂FC = 9.45, FDR = 3.8e-67), and ENSG00000170454 (log₂FC = 8.58, FDR = 4.7e-36). On the flip side, the most downregulated were ENSG00000260676 (log₂FC = -9.54, FDR = 3.2e-12), ENSG00000166863 (log₂FC = -9.35, FDR = 1.8e-58), and ENSG00000162877 (log₂FC = -8.69, FDR = 1.7e-66).
 
 ![Volcano Plot](results/task3_volcano_plot.png)
 **Figure 6:** Volcano plot of differential expression analysis. Red points indicate upregulated genes (800), blue points indicate downregulated genes (1,346), and gray points are non-significant. Significance thresholds: FDR < 0.01 and |log₂FC| > 1.
 
 #### 3.4.2 DEG-Based Dimensionality Reduction
 
-PCA performed on the 2,146 significant DEGs revealed improved separation compared to all-gene PCA. PC1 and PC2 explained 28.72% and 9.04% of variance, respectively (cumulative 37.77%). This substantial increase in variance explained (37.77% vs 22.77%) demonstrates that DEGs capture the primary sources of variation distinguishing tumor grades.
+When we ran PCA using only the 2,146 significant DEGs, we saw much better separation between tumor grades compared to using all genes. PC1 and PC2 now explained 28.72% and 9.04% of variance (37.77% total). This jump from 22.77% to 37.77% tells us that the DEGs really do capture the main differences between tumor grades.
 
 ![DEG PCA](results/task3_pca_degs.png)
 **Figure 7:** PCA analysis using only the 2,146 significant DEGs. Left: Clear separation of tumor grades along PC1 (28.72% variance). Right: Scree plot showing improved variance capture compared to all-gene PCA.
 
 ### 3.5 Biological Interpretation via Gene Ontology
 
-Gene ontology enrichment analysis of all 2,146 DEGs identified 153 significantly enriched Biological Process terms (FDR < 0.05). Top enriched processes included:
+When we looked at what biological processes our 2,146 DEGs were involved in, gene ontology enrichment turned up 153 significantly enriched terms (FDR < 0.05). The top hits fell into a few main categories:
 
-- **Immune response and inflammation:** cytokine-mediated signaling pathway (FDR = 1.2e-15, 89 genes), inflammatory response (FDR = 3.4e-12, 67 genes), leukocyte migration (FDR = 8.9e-11, 54 genes)
-- **Cell proliferation and division:** mitotic cell cycle (FDR = 2.1e-08, 78 genes), cell division (FDR = 5.6e-07, 65 genes), chromosome segregation (FDR = 1.3e-06, 42 genes)
-- **Tissue development and morphogenesis:** epithelial cell differentiation (FDR = 4.5e-09, 71 genes), tissue development (FDR = 7.8e-08, 93 genes), extracellular matrix organization (FDR = 2.3e-07, 58 genes)
+- **Immune response and inflammation:** cytokine signaling (FDR = 1.2e-15, 89 genes), inflammatory response (FDR = 3.4e-12, 67 genes), and leukocyte migration (FDR = 8.9e-11, 54 genes)
+- **Cell proliferation and division:** mitotic cell cycle (FDR = 2.1e-08, 78 genes), cell division (FDR = 5.6e-07, 65 genes), and chromosome segregation (FDR = 1.3e-06, 42 genes)
+- **Tissue development and structure:** epithelial cell differentiation (FDR = 4.5e-09, 71 genes), tissue development (FDR = 7.8e-08, 93 genes), and extracellular matrix organization (FDR = 2.3e-07, 58 genes)
 
-These enriched pathways implicate dysregulation of immune surveillance, uncontrolled proliferation, and disrupted tissue architecture as key molecular features distinguishing high-grade from low-grade bladder tumors.
+These results point to disrupted immune surveillance, uncontrolled cell division, and altered tissue organization as major molecular differences between high-grade and low-grade bladder tumors.
 
 ![GO Enrichment](results/task4_go_enrichment_plots.png)
 **Figure 8:** Gene Ontology enrichment analysis. Top: Bar plot of top 20 enriched GO Biological Process terms ranked by -log₁₀(adjusted p-value). Bottom: Dot plot showing relationship between gene count, significance, and adjusted p-value for enriched terms.
+
+![GO Enrichment Labeled](results/task4_go_enrichment_labeled.png)
+**Figure 9:** Enhanced GO enrichment dot plot with key terms labeled. Bubble size shows gene count, with highlighted annotations for major processes: Cell Population Proliferation, Cell Migration, Inflammatory Response, and Angiogenesis.
 
 ### 3.6 Summary Statistics
 
@@ -196,29 +201,29 @@ These enriched pathways implicate dysregulation of immune surveillance, uncontro
 
 ## 4. Discussion
 
-Our comprehensive transcriptomic analysis of TCGA-BLCA samples reveals extensive molecular differences between low-grade and high-grade bladder tumors. The identification of 2,146 differentially expressed genes (13.4% of tested genes) underscores the substantial transcriptional reprogramming accompanying bladder cancer progression.
+Our analysis of TCGA-BLCA samples uncovered substantial molecular differences between low-grade and high-grade bladder tumors. Finding 2,146 differentially expressed genes—about 13.4% of all genes we tested—shows just how much transcriptional rewiring happens as bladder cancer progresses.
 
 ### 4.1 Methodological Considerations
 
-The use of count-based gene filtering rather than CPM-based filtering is critical for RNA-seq analysis, as it prevents bias toward highly expressed genes and ensures that lowly expressed genes present in a subset of samples are appropriately excluded based on detection frequency rather than relative abundance. Our threshold of raw count > 5 in at least 10% of samples is consistent with established best practices for bulk RNA-seq preprocessing.
+Using count-based filtering instead of CPM-based filtering was important here. Count-based filtering avoids favoring highly expressed genes and makes sure we're removing lowly expressed genes based on how often they're detected, not how abundant they are when present. Our cutoff (raw count > 5 in at least 10% of samples) follows standard practices for bulk RNA-seq data preprocessing.
 
-The application of DESeq2 for differential expression analysis is methodologically superior to simpler approaches like t-tests on normalized counts. DESeq2's negative binomial model explicitly accounts for the discrete nature of count data, overdispersion, and library size differences. The shrinkage of log fold change estimates improves robustness, particularly for genes with low counts or high variability. Our results demonstrate the power of proper statistical modeling, with thousands of DEGs identified at stringent significance thresholds.
+Choosing DESeq2 for differential expression was also key. It's more appropriate than simpler methods like t-tests on normalized counts because it accounts for the fact that RNA-seq data are discrete counts, not continuous measurements. DESeq2 handles overdispersion and library size differences properly, and it shrinks fold change estimates to make them more reliable, especially for genes with low counts or high variability. The fact that we identified thousands of DEGs at strict significance cutoffs shows the value of using the right statistical approach.
 
 ### 4.2 Biological Insights
 
-The moderate entropy (0.3902) observed in unsupervised clustering indicates that global expression patterns can reasonably separate tumor grades, with Cluster 0 enriched for low-grade (90.6%) and Cluster 1 enriched for high-grade (94.6%) tumors. This finding demonstrates that grade-specific molecular signatures exist and can be detected through unsupervised methods. The improved PCA separation using DEGs alone (37.77% variance explained vs 22.77% for all genes) further confirms that differential expression is concentrated in specific biological pathways rather than representing random transcriptional noise.
+The moderate entropy (0.3902) from our unsupervised clustering suggests that overall expression patterns do a decent job separating tumor grades—Cluster 0 was 90.6% low-grade and Cluster 1 was 94.6% high-grade. This tells us grade-specific molecular signatures really do exist and can be picked up without using the grade labels. The fact that PCA worked better with just the DEGs (explaining 37.77% vs. 22.77% of variance) confirms that the expression differences aren't random noise but are concentrated in particular biological pathways.
 
-Gene ontology enrichment analysis revealed dysregulation of immune response pathways, consistent with known roles of immune evasion and tumor microenvironment remodeling in cancer progression. The enrichment of cell proliferation and cell cycle pathways aligns with the increased mitotic activity characteristic of high-grade tumors. Alterations in tissue development and extracellular matrix organization suggest disruption of normal epithelial architecture, a hallmark of invasive cancer.
+The gene ontology results make biological sense. Immune response pathways showed up prominently, which fits with what we know about immune evasion and microenvironment changes in cancer. We also saw enrichment in cell proliferation and cell cycle pathways, matching the increased cell division in high-grade tumors. Changes in tissue development and extracellular matrix organization suggest the normal epithelial structure is breaking down—a key feature of invasive cancer.
 
 ### 4.3 Limitations and Future Directions
 
-This analysis focused on protein-coding genes and did not examine non-coding RNAs, which may also contribute to tumor grade differences. Additionally, bulk RNA-seq data represent averaged signals across heterogeneous cell populations; single-cell RNA-seq would provide finer resolution of cellular subpopulations. Future work should validate key DEGs at the protein level and investigate their functional roles in bladder cancer progression through experimental perturbation studies.
+We focused on protein-coding genes here, so we didn't look at non-coding RNAs, which might also play a role in tumor grade differences. Bulk RNA-seq gives us averaged signals across mixed cell populations, so we can't see what's happening in specific cell types. Single-cell RNA-seq would give us that finer detail. Going forward, it would be valuable to validate some of these key DEGs at the protein level and test their actual functional roles in bladder cancer progression through lab experiments.
 
 ---
 
 ## 5. Conclusion
 
-This study presents a comprehensive transcriptomic analysis of bladder cancer subtypes using TCGA-BLCA data. Through rigorous preprocessing following assignment specifications, statistical analysis with DESeq2, and biological interpretation, we identified 2,146 significantly differentially expressed genes between low-grade and high-grade tumors. Gene ontology enrichment revealed dysregulation of immune response, cell proliferation, and tissue architecture pathways (153 enriched terms) as molecular hallmarks of high-grade disease. These findings contribute to our understanding of bladder cancer molecular heterogeneity and provide candidate biomarkers for future validation studies.
+This study provides a thorough transcriptomic look at bladder cancer subtypes using data from TCGA-BLCA. Through careful data preprocessing, statistical analysis with DESeq2, and biological interpretation, we identified 2,146 genes with significant expression differences between low-grade and high-grade tumors. Gene ontology enrichment pointed to dysregulation in immune response, cell proliferation, and tissue organization pathways (153 enriched terms total) as key molecular features of high-grade disease. These results add to our understanding of molecular heterogeneity in bladder cancer and suggest potential biomarkers that could be validated in future studies.
 
 ---
 

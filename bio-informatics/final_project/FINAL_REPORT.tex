@@ -68,15 +68,15 @@
 \section*{Summary}
 \addcontentsline{toc}{section}{Executive Summary}
 
-This report presents a comprehensive bioinformatics analysis of bladder cancer (TCGA-BLCA) RNA-seq data, focusing on differential gene expression, clustering analysis, and functional enrichment to identify molecular signatures distinguishing Low Grade (LG) from High Grade (HG) tumors. The analysis pipeline identified 15,967 genes after quality filtering and revealed 2,146 differentially expressed genes (DEGs) using DESeq2, highlighting critical biological pathways involved in cancer progression.
+This report presents a bioinformatics analysis of bladder cancer (TCGA-BLCA) RNA-seq data, examining differential gene expression, clustering patterns, and functional enrichment to identify molecular signatures that distinguish low-grade from high-grade tumors. After quality filtering, we analyzed 15,967 genes and identified 2,146 differentially expressed genes using DESeq2, revealing important biological pathways involved in cancer progression.
 
 \subsection*{Key Findings:}
 \begin{itemize}
-    \item 2,146 DEGs identified using DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$): 800 upregulated, 1,346 downregulated in High Grade tumors
-    \item Optimal clustering: 2 clusters with moderate entropy (0.3902), showing good separation of tumor grades
-    \item PC1+PC2 explain 22.77\% variance on all genes, 37.77\% on DEGs only
-    \item 153 significant GO:BP terms enriched, revealing immune response, proliferation, and ECM remodeling pathways
-    \item Key methodological corrections: proper count-based filtering (removes genes not expressed in $\geq$10\% samples), DESeq2 instead of t-tests, proper entropy calculation
+    \item 2,146 DEGs identified with DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$): 800 upregulated and 1,346 downregulated in high-grade tumors
+    \item Optimal clustering at k=2 with moderate entropy (0.3902), showing reasonable separation between tumor grades
+    \item PC1+PC2 captured 22.77\% variance using all genes, 37.77\% using DEGs only
+    \item 153 significant GO biological process terms enriched, highlighting immune response, proliferation, and ECM remodeling
+    \item Methodological approach: count-based filtering (genes expressed in $\geq$10\% samples), DESeq2 for proper count data modeling, entropy for cluster quality assessment
 \end{itemize}
 
 \newpage
@@ -87,14 +87,14 @@ This report presents a comprehensive bioinformatics analysis of bladder cancer (
 \section{Introduction}
 
 \subsection{Background}
-Bladder cancer (BLCA) is one of the most common urological malignancies, with significant heterogeneity in clinical outcomes. The Cancer Genome Atlas (TCGA) BLCA cohort provides comprehensive molecular profiling that can identify grade-specific biomarkers.
+Bladder cancer ranks among the most common urological malignancies and shows considerable variation in clinical outcomes. The Cancer Genome Atlas (TCGA) BLCA cohort offers detailed molecular profiling that can help identify biomarkers specific to tumor grade.
 
 \subsection{Objectives}
 \begin{enumerate}
-    \item Identify differentially expressed genes between Low Grade and High Grade bladder tumors
-    \item Perform unsupervised clustering to discover molecular subtypes
-    \item Conduct functional enrichment analysis to understand biological mechanisms
-    \item Validate findings against published TCGA-BLCA literature
+    \item Identify genes differentially expressed between low-grade and high-grade bladder tumors
+    \item Use unsupervised clustering to discover molecular subtypes
+    \item Conduct functional enrichment analysis to understand underlying biological mechanisms
+    \item Compare findings with published TCGA-BLCA literature
 \end{enumerate}
 
 \subsection{Dataset Description}
@@ -110,58 +110,59 @@ Bladder cancer (BLCA) is one of the most common urological malignancies, with si
 \subsection{Data Preprocessing}
 
 \subsubsection{Gene Filtering}
-Criteria Applied:
+Filtering Approach:
 \begin{itemize}
-    \item Instruction: ``Filter out genes that are not expressed (count $\leq$ 5) in at least 10\% of the samples''
-    \item Implementation: Remove genes where count $\leq$ 5 in $\geq$10\% of samples (9 samples)
-    \item Equivalently: Keep genes where count $\leq$ 5 in $<$10\% of samples
-    \item Rationale: This strict filtering ensures only genes expressed above threshold in most samples are retained, reducing noise from lowly expressed genes.
+    \item Guideline: ``Filter out genes that are not expressed (count $\leq$ 5) in at least 10\% of the samples''
+    \item Implementation: Removed genes where count $\leq$ 5 in 9 or more samples (10\% of 90 samples)
+    \item Equivalent to: Keeping only genes with count $>$ 5 in at least 90\% of samples
+    \item Rationale: This stringent filtering removes lowly expressed genes that contribute noise while retaining biologically relevant transcripts
 \end{itemize}
 
-Results:
+Filtering Results:
 \begin{itemize}
-    \item Original: 60,660 genes
+    \item Started with: 60,660 genes
     \item Retained: 15,967 genes (26.3\%)
-    \item Removed: 44,693 genes (73.7\%)
+    \item Filtered out: 44,693 genes (73.7\%)
 \end{itemize}
 
 \subsubsection{Normalization}
-Method: Counts Per Million (CPM)
+We normalized the data using Counts Per Million (CPM):
 \begin{equation}
 \text{CPM} = \frac{\text{gene\_counts}}{\text{total\_library\_size}} \times 1{,}000{,}000
 \end{equation}
 
+And applied log transformation for downstream analyses:
 \begin{equation}
 \log_2\text{CPM} = \log_2(\text{CPM} + 1)
 \end{equation}
 
-Justification: CPM normalization accounts for sequencing depth differences between samples while preserving relative abundance information.
+Justification: CPM normalization handles differences in sequencing depth between samples while keeping relative abundance information intact.
 
 \subsection{Dimensionality Reduction}
 
 \subsubsection{Principal Component Analysis (PCA)}
-Implementation:
+We performed PCA to reduce dimensionality and visualize expression patterns:
 \begin{itemize}
-    \item Performed on $\log_2$CPM values (15,967 genes)
-    \item StandardScaler preprocessing (mean=0, variance=1)
-    \item Analyzed PC1 and PC2 for visualization
+    \item Input: $\log_2$CPM values for 15,967 genes
+    \item Preprocessing: StandardScaler (mean=0, variance=1)
+    \item Focus: PC1 and PC2 for visualization
 \end{itemize}
 
 Variance Explained (All Genes):
 \begin{itemize}
     \item PC1: 13.59\%
     \item PC2: 9.18\%
-    \item Cumulative: 22.77\%
+    \item Combined: 22.77\%
 \end{itemize}
 
 Variance Explained (DEGs Only):
 \begin{itemize}
     \item PC1: 28.72\%
     \item PC2: 9.04\%
-    \item Cumulative: 37.77\%
+    \item Combined: 37.77\%
 \end{itemize}
 
-Interpretation: Higher variance explained by DEGs confirms their discriminative power for tumor grade classification.
+Interpretation: The higher variance captured using just DEGs shows they contain the key information for distinguishing tumor grades.
 
 \subsection{Clustering Analysis}
 
@@ -204,7 +205,7 @@ Total Entropy & 0.3902 & -- \\
 \end{tabular}
 \end{table}
 
-Conclusion: Both methods identified k=2 as optimal. Hierarchical clustering had significantly higher silhouette score (0.4544 vs 0.0721). Moderate entropy (0.3902) indicates reasonable separation of tumor grades by unsupervised clustering, with Cluster 0 being 90.6\% low-grade and Cluster 1 being 94.6\% high-grade.
+Conclusion: Both methods pointed to k=2 as optimal. Hierarchical clustering showed much stronger cluster separation (silhouette score 0.4544 vs 0.0721 for K-means). The moderate entropy (0.3902) suggests unsupervised clustering does a reasonable job separating tumor grades, with Cluster 0 containing mostly low-grade (90.6\%) and Cluster 1 mostly high-grade (94.6\%) tumors.
 
 \begin{figure}[h]
 \centering
@@ -214,38 +215,38 @@ Conclusion: Both methods identified k=2 as optimal. Hierarchical clustering had 
 \end{figure}
 
 \subsubsection{Entropy Calculation}
-Following the course lecture notes, cluster entropy is calculated as:
+We calculated cluster entropy to measure how well cluster assignments match true tumor grades.
 
 Per-cluster entropy:
 \begin{equation}
 e_j = -\sum_{i=1}^{c} p_{ij} \log_2(p_{ij})
 \end{equation}
 
-where $p_{ij}$ is the proportion of samples in cluster $j$ belonging to class $i$, and $c$ is the number of classes (tumor grades).
+where $p_{ij}$ is the fraction of samples in cluster $j$ that belong to grade $i$, and $c$ is the number of tumor grades.
 
 Total weighted entropy:
 \begin{equation}
 E = \sum_{j=1}^{k} \frac{m_j}{m} \times e_j
 \end{equation}
 
-where $m_j$ is the size of cluster $j$, $m$ is the total number of samples, and $k$ is the number of clusters. Entropy ranges from 0 (perfect purity, all samples in each cluster belong to one class) to 1 (random assignment, equal distribution of classes in all clusters).
+where $m_j$ is the number of samples in cluster $j$, $m$ is the total sample count, and $k$ is the number of clusters. Entropy ranges from 0 (perfect separation—each cluster contains only one grade) to 1 (random—grades equally distributed across clusters).
 
 \subsection{Differential Expression Analysis}
 
 \subsubsection{DESeq2 Statistical Model}
-Method: DESeq2 with negative binomial distribution
+We used DESeq2, which models RNA-seq count data with a negative binomial distribution:
 \begin{itemize}
-    \item Model: RNA-seq count data with $K_{ij} \sim \text{NB}(\mu_{ij}, \alpha_i)$
-    \item Accounts for: Library size differences, gene-wise dispersion, log fold change shrinkage
-    \item Statistical test: Wald test with Benjamini-Hochberg FDR correction
-    \item Advantages: Proper modeling of count data, overdispersion handling, improved robustness
+    \item Model: $K_{ij} \sim \text{NB}(\mu_{ij}, \alpha_i)$ for count data
+    \item Handles: Library size differences, gene-specific dispersion, fold change shrinkage
+    \item Statistical test: Wald test with Benjamini-Hochberg FDR adjustment
+    \item Benefits: Properly models count data, handles overdispersion, improves reliability
 \end{itemize}
 
 \subsubsection{Multiple Testing Correction}
-Method: Benjamini-Hochberg FDR (statsmodels.multipletests)
+We applied Benjamini-Hochberg FDR correction:
 \begin{itemize}
-    \item Significance threshold: FDR $<$ 0.01
-    \item Biological significance: $|\log_2\text{FoldChange}| > 1$
+    \item Statistical cutoff: FDR $<$ 0.01
+    \item Biological cutoff: $|\log_2\text{FoldChange}| > 1$
 \end{itemize}
 
 \subsubsection{Log Fold Change Calculation}
@@ -253,7 +254,7 @@ Method: Benjamini-Hochberg FDR (statsmodels.multipletests)
 \log_2\text{FC} = \log_2\left(\frac{\text{mean}_{\text{HG}} + 1}{\text{mean}_{\text{LG}} + 1}\right)
 \end{equation}
 
-Pseudocount (+1) prevents division by zero for low-expression genes.
+The pseudocount (+1) avoids division by zero for genes with very low expression.
 
 \subsection{Functional Enrichment Analysis}
 
@@ -400,7 +401,7 @@ ENSG00000170465 & 8.11 & $3.7 \times 10^{-37}$ & Cancer progression \\
 \end{tabular}
 \end{table}
 
-Biological Interpretation: Upregulated genes are heavily enriched for extracellular matrix (ECM) remodeling and immune response, consistent with aggressive tumor phenotype.
+Biological Interpretation: Upregulated genes show strong enrichment for extracellular matrix remodeling and immune response, which fits with the aggressive nature of high-grade tumors.
 
 \subsubsection{Top Downregulated Genes (High Grade)}
 
@@ -420,7 +421,7 @@ ENSG00000197273 & -8.29 & $2.8 \times 10^{-33}$ & Low-grade marker \\
 \end{tabular}
 \end{table}
 
-Biological Interpretation: Downregulated genes are enriched for differentiation markers, indicating loss of normal urothelial identity in high-grade tumors (dedifferentiation).
+Biological Interpretation: Downregulated genes are enriched for differentiation markers, showing loss of normal bladder cell identity in high-grade tumors (dedifferentiation).
 
 \begin{figure}[h]
 \centering
@@ -475,6 +476,13 @@ Total Significant Terms: 153 GO:BP terms (adj. p $<$ 0.05)
 \includegraphics[width=0.95\textwidth]{results/task4_go_enrichment_plots.png}
 \caption{Gene Ontology enrichment analysis. Top: Bar plot of top 20 enriched GO Biological Process terms ranked by -log$_{10}$(adjusted p-value). Bottom: Dot plot showing relationship between gene count, significance, and adjusted p-value for enriched terms.}
 \label{fig:go_enrichment}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{results/task4_go_enrichment_labeled.png}
+\caption{Enhanced GO enrichment dot plot with labeled key terms. Bubble size represents gene count, with yellow-highlighted annotations pointing to major biological processes: Cell Population Proliferation, Cell Migration, Inflammatory Response, and Angiogenesis.}
+\label{fig:go_enrichment_labeled}
 \end{figure}
 
 \subsubsection{Molecular Function (GO:MF) - Top Terms}
@@ -571,91 +579,91 @@ Novel Findings in This Analysis:
 \subsection{Major Findings}
 
 \subsubsection{Molecular Heterogeneity in Bladder Cancer}
-The moderate weighted entropy (0.3902) and reasonable unsupervised clustering separation (Cluster 0: 90.6\% LG, Cluster 1: 94.6\% HG) indicate that global gene expression patterns can partially distinguish tumor grades. The improved PCA separation with DEGs only (37.77\% vs 22.77\% variance) confirms that grade-specific differences are concentrated in specific pathways. This demonstrates that while some molecular heterogeneity exists, distinct transcriptional programs characterize high-grade vs. low-grade tumors.
+The moderate weighted entropy (0.3902) and decent clustering separation (Cluster 0: 90.6\% low-grade, Cluster 1: 94.6\% high-grade) show that overall gene expression patterns can distinguish tumor grades reasonably well. The better PCA separation using just DEGs (37.77\% vs 22.77\% variance) confirms that grade-specific differences concentrate in particular pathways. While there's some molecular heterogeneity, distinct gene expression programs do characterize high-grade versus low-grade tumors.
 
 \subsubsection{Dual Axes of Progression}
-Two independent processes distinguish HG from LG tumors:
+Two main processes separate high-grade from low-grade tumors:
 \begin{enumerate}
-    \item Proliferation axis: Cell cycle acceleration and replicative stress
-    \item Microenvironment axis: ECM remodeling and immune recruitment
+    \item Proliferation axis: Faster cell cycle and replication stress
+    \item Microenvironment axis: ECM remodeling and immune cell recruitment
 \end{enumerate}
 
 \subsubsection{Clinical Implications}
-Therapeutic Vulnerabilities Identified:
+Potential therapeutic targets identified:
 \begin{itemize}
-    \item Cell cycle inhibitors: Target elevated proliferation (CDK4/6 inhibitors)
-    \item MMP inhibitors: Block ECM remodeling and invasion
-    \item Immune checkpoint blockade: Exploit PD-L1 expression in HG tumors
+    \item Cell cycle inhibitors: Target increased proliferation (e.g., CDK4/6 inhibitors)
+    \item MMP inhibitors: Block ECM remodeling and tumor invasion
+    \item Immune checkpoint blockade: Take advantage of PD-L1 expression in high-grade tumors
     \item ECM-targeting therapies: Disrupt collagen networks (e.g., LOX inhibitors)
 \end{itemize}
 
 \subsection{Strengths of This Analysis}
 
 \begin{enumerate}
-    \item Comprehensive workflow: Integrates clustering, DEG analysis, and functional enrichment
-    \item Rigorous statistics: FDR correction and multiple validation metrics
-    \item Reproducible methodology: Random seeds, version control, documented parameters
-    \item Biological interpretation: GO enrichment linked to cancer hallmarks
-    \item Validation: Concordance with published TCGA-BLCA studies
+    \item Complete workflow: Combines clustering, differential expression, and pathway enrichment
+    \item Solid statistics: FDR correction and multiple quality metrics
+    \item Reproducible approach: Set random seeds, documented parameters
+    \item Biological context: GO enrichment connected to cancer biology
+    \item Literature support: Results align with published TCGA-BLCA studies
 \end{enumerate}
 
 \subsection{Limitations and Future Directions}
 
 \subsubsection{Limitations}
 \begin{enumerate}
-    \item Small sample size: 90 samples limits statistical power for subtype discovery
-    \item Bulk RNA-seq: Cannot resolve cell-type-specific signals (tumor vs. stromal vs. immune)
-    \item Lack of clinical data: Cannot correlate with survival outcomes or treatment response
-    \item No validation cohort: Findings not tested in independent dataset
+    \item Sample size: 90 samples may limit power for finding subtypes
+    \item Bulk RNA-seq: Can't distinguish tumor, stromal, and immune cell signals
+    \item Missing clinical data: Can't link to survival or treatment response
+    \item No validation: Findings not tested in independent datasets
 \end{enumerate}
 
 \subsubsection{Future Directions}
 \begin{enumerate}
-    \item Single-cell RNA-seq: Dissect tumor microenvironment composition
-    \item Multi-omics integration: Combine with DNA methylation, CNV, and mutation data
-    \item Survival analysis: Associate DEGs with patient outcomes
-    \item Experimental validation: Functional studies of top candidate genes (MMP11, GATA3)
-    \item Machine learning: Build predictive models for grade classification
+    \item Single-cell RNA-seq: Break down the tumor microenvironment
+    \item Multi-omics: Add DNA methylation, copy number, and mutation data
+    \item Survival analysis: Connect DEGs to patient outcomes
+    \item Lab validation: Test key candidate genes (MMP11, GATA3) functionally
+    \item Machine learning: Develop predictive models for grade classification
 \end{enumerate}
 
 \subsection{Biological Significance}
 
-The 5,800 DEGs identified using DESeq2 represent a robust molecular signature that:
+The 2,146 DEGs identified with DESeq2 form a molecular signature that:
 \begin{itemize}
-    \item Distinguishes tumor grades with biological plausibility
-    \item Highlights actionable therapeutic targets
-    \item Provides biomarkers for prognosis and treatment stratification
-    \item Contributes to understanding bladder cancer biology
+    \item Distinguishes tumor grades in biologically meaningful ways
+    \item Points to potential therapeutic targets
+    \item Offers biomarkers for prognosis and treatment decisions
+    \item Adds to our understanding of bladder cancer biology
 \end{itemize}
 
-Key biological insight: High-grade bladder cancer is characterized by simultaneous activation of proliferation and ECM remodeling programs, coupled with loss of differentiation markers.
+Key insight: High-grade bladder cancer involves simultaneous activation of cell proliferation and ECM remodeling, combined with loss of normal differentiation markers.
 
 \section{Conclusions}
 
-This comprehensive bioinformatics analysis successfully identified and characterized molecular differences between Low Grade and High Grade bladder cancer tumors using TCGA-BLCA RNA-seq data.
+This bioinformatics analysis identified and characterized molecular differences between low-grade and high-grade bladder cancer tumors using TCGA-BLCA RNA-seq data.
 
 \subsection{Key Deliverables:}
 \begin{enumerate}
-    \item 2,146 high-confidence DEGs identified with DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$)
-    \item Clustering validation showing moderate entropy (0.3902), demonstrating reasonable separation
-    \item 153 enriched GO:BP terms revealing cancer-relevant pathways
-    \item Publication-quality visualizations (PCA, volcano plots, heatmaps, enrichment plots)
-    \item Reproducible Python pipeline documented in Jupyter notebook
+    \item 2,146 differentially expressed genes found with DESeq2 (FDR $<$ 0.01, $|\log_2\text{FC}| > 1$)
+    \item Clustering with moderate entropy (0.3902), showing reasonable grade separation
+    \item 153 enriched GO biological process terms pointing to cancer-relevant pathways
+    \item Clear visualizations (PCA plots, volcano plots, heatmaps, enrichment plots)
+    \item Reproducible analysis pipeline documented in Jupyter notebook
 \end{enumerate}
 
 \subsection{Biological Insights:}
 \begin{itemize}
-    \item High-grade tumors exhibit proliferation acceleration, ECM remodeling, and differentiation loss
-    \item Molecular heterogeneity suggests personalized treatment approaches needed
-    \item Immune infiltration signatures indicate immunotherapy potential
+    \item High-grade tumors show faster proliferation, ECM remodeling, and loss of differentiation
+    \item Molecular heterogeneity suggests need for personalized treatment
+    \item Immune signatures point to potential immunotherapy applications
 \end{itemize}
 
 \subsection{Clinical Relevance:}
-This analysis provides a foundation for:
+This analysis lays groundwork for:
 \begin{itemize}
-    \item Biomarker discovery for grade prediction
-    \item Therapeutic target identification (MMP11, PD-L1, CDKs)
-    \item Patient stratification for precision medicine
+    \item Discovering biomarkers to predict tumor grade
+    \item Identifying therapeutic targets (MMP11, PD-L1, CDKs)
+    \item Stratifying patients for precision medicine
 \end{itemize}
 
 \section{References}
